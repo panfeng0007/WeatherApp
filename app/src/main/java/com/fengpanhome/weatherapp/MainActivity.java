@@ -13,10 +13,13 @@ import java.io.IOException;
 
 public class MainActivity extends Activity implements OnClickListener
 {
-
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private YahooWeather mYahooWeather = new YahooWeather();
+    private YahooWeather mYahooWeather;
     public final static String EXTRA_MESSAGE = "com.fengpanhome.weatherapp.MESSAGE";
+
+    public MainActivity()
+    {
+        mYahooWeather = new YahooWeather();
+    }
 
     private class AsyncOps extends AsyncTask<String, Void, String>
     {
