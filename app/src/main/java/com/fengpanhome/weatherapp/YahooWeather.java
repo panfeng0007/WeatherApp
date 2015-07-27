@@ -1,8 +1,5 @@
 package com.fengpanhome.weatherapp;
 
-import android.os.AsyncTask;
-import android.widget.TextView;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;

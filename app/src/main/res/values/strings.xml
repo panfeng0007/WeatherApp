@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">WeatherApp</string>
     <string name="header"><strong><i>The Weather Channel</i></strong></string>
+    <string name="debug">Debug</string>
     <string name="action_settings">Settings</string>
+    <string name="search">Search Button</string>
     <string name="location"><i>Location</i></string>
     <string name="title_activity_result">ResultActivity</string>
+    <string name="title_activity_forecast">ForecastActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
