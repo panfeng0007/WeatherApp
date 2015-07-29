@@ -7,6 +7,22 @@
     <string name="location"><i>Location</i></string>
     <string name="title_activity_result">ResultActivity</string>
     <string name="title_activity_forecast">ForecastActivity</string>
-
-    <string name="hello_world">Hello world!</string>
+    <string name="card_title">Hello World</string>
+    <string name="card_content">Hello Android</string>
+    <string name="city_name">City Name</string>
+    <string name="sky_condition">Sky Condition</string>
+    <string name="wind">Wind: </string>
+    <string name="precip">Precip: </string>
+    <string name="img_condition">Weather Condition Image</string>
+    <string name="temp">85 F</string>
+    <string name="mon">MON</string>
+    <string name="tue">TUE</string>
+    <string name="wed">WED</string>
+    <string name="thu">THU</string>
+    <string name="fri">FRI</string>
+    <string name="sat">SAT</string>
+    <string name="sun">SUN</string>
+    <string name="description_mini_icon">Mini Icon</string>
+    <string name="temp_min">60F</string>
+    <string name="temp_max">80F</string>
 </resources>

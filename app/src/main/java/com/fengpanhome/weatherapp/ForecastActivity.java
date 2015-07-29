@@ -1,32 +1,189 @@
 package com.fengpanhome.weatherapp;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class ForecastActivity extends Activity
 {
+    ArrayList<WeatherForecast> weatherForecastList;
+    private class GetForecastTask extends AsyncTask<String, Void, WeatherForecast>
+    {
 
-    private RecyclerView mRecylerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
+        @Override
+        protected WeatherForecast doInBackground(String... params)
+        {
+            YahooWeather yahooWeather = new YahooWeather(params[0]);
+            try {
+                WeatherForecast ret = yahooWeather.getFullForecast();
+                if (ret != null)
+                    return ret;
+                else
+                    Log.d("RET: " , "is null");
+            } catch (IOException | JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(WeatherForecast forecast)
+        {
+            if (forecast != null)
+            {
+                weatherForecastList = new ArrayList<>();
+                weatherForecastList.add(forecast);
+                RecyclerView rv = (RecyclerView) findViewById(R.id.forecast_list);
+                rv.setLayoutManager(new LinearLayoutManager(ForecastActivity.this));
+                rv.setHasFixedSize(true);
+                rv.setAdapter(new WeatherForecastAdapter(weatherForecastList));
+            }
+        }
+    }
+    public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecastAdapter.WeatherForecastViewHolder>
+    {
+        private ArrayList<WeatherForecast> weatherForecastList;
+
+        public WeatherForecastAdapter(ArrayList<WeatherForecast> weatherForecastList)
+        {
+            this.weatherForecastList = weatherForecastList;
+        }
+
+        @Override
+        public WeatherForecastViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType)
+        {
+            LayoutInflater layoutInflater = LayoutInflater.from(viewGroup.getContext());
+            View v = layoutInflater.inflate(R.layout.forecast_card_layout, viewGroup, false);
+            return new WeatherForecastViewHolder(v);
+        }
+
+        @Override
+        public void onBindViewHolder(WeatherForecastViewHolder holder, int i)
+        {
+            holder.cityName.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getCityName());
+            holder.skyCondition.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getSkyCondition());
+            holder.wind.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getWind());
+            holder.temp.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getTemperature());
+            holder.precipitation.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getHumidity());
+            holder.weatherIcon.setImageResource(weatherForecastList.get(i).getWeatherForecastCurrent().getIconDrawable());
+
+            holder.daysOfWeekDayOne.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(0).getDayOfWeek());
+            holder.daysOfWeekDayTwo.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(1).getDayOfWeek());
+            holder.daysOfWeekDayThree.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(2).getDayOfWeek());
+            holder.daysOfWeekDayFour.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(3).getDayOfWeek());
+            holder.daysOfWeekDayFive.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(4).getDayOfWeek());
+
+            holder.miniIconDayOne.setImageResource(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(0).getIconDrawable());
+            holder.miniIconDayTwo.setImageResource(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(1).getIconDrawable());
+            holder.miniIconDayThree.setImageResource(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(2).getIconDrawable());
+            holder.miniIconDayFour.setImageResource(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(3).getIconDrawable());
+            holder.miniIconDayFive.setImageResource(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(4).getIconDrawable());
+
+            holder.tempMinDayOne.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(0).getTempMin());
+            holder.tempMinDayTwo.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(1).getTempMin());
+            holder.tempMinDayThree.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(2).getTempMin());
+            holder.tempMinDayFour.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(3).getTempMin());
+            holder.tempMinDayFive.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(4).getTempMin());
+
+            holder.tempMaxDayOne.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(0).getTempMax());
+            holder.tempMaxDayTwo.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(1).getTempMax());
+            holder.tempMaxDayThree.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(2).getTempMax());
+            holder.tempMaxDayFour.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(3).getTempMax());
+            holder.tempMaxDayFive.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(4).getTempMax());
+        }
+
+        @Override
+        public int getItemCount()
+        {
+            return weatherForecastList.size();
+        }
+
+        public class WeatherForecastViewHolder extends RecyclerView.ViewHolder
+        {
+            public TextView cityName;
+            public TextView skyCondition;
+            public TextView wind;
+            public TextView temp;
+            public TextView precipitation;
+            public ImageView weatherIcon;
+            public TextView daysOfWeekDayOne;
+            public TextView daysOfWeekDayTwo;
+            public TextView daysOfWeekDayThree;
+            public TextView daysOfWeekDayFour;
+            public TextView daysOfWeekDayFive;
+            public ImageView miniIconDayOne;
+            public ImageView miniIconDayTwo;
+            public ImageView miniIconDayThree;
+            public ImageView miniIconDayFour;
+            public ImageView miniIconDayFive;
+            public TextView tempMinDayOne;
+            public TextView tempMinDayTwo;
+            public TextView tempMinDayThree;
+            public TextView tempMinDayFour;
+            public TextView tempMinDayFive;
+            public TextView tempMaxDayOne;
+            public TextView tempMaxDayTwo;
+            public TextView tempMaxDayThree;
+            public TextView tempMaxDayFour;
+            public TextView tempMaxDayFive;
+
+            public WeatherForecastViewHolder(View itemView)
+            {
+                super(itemView);
+                cityName = (TextView) itemView.findViewById(R.id.city_name);
+                skyCondition = (TextView) itemView.findViewById(R.id.sky_condition);
+                wind = (TextView) itemView.findViewById(R.id.wind);
+                temp = (TextView) itemView.findViewById(R.id.temp);
+                precipitation = (TextView) itemView.findViewById(R.id.precip);
+                weatherIcon = (ImageView) itemView.findViewById(R.id.img_condition);
+                daysOfWeekDayOne = (TextView)itemView.findViewById(R.id.dayone);
+                daysOfWeekDayTwo = (TextView)itemView.findViewById(R.id.daytwo);
+                daysOfWeekDayThree = (TextView)itemView.findViewById(R.id.daythree);
+                daysOfWeekDayFour = (TextView)itemView.findViewById(R.id.dayfour);
+                daysOfWeekDayFive = (TextView)itemView.findViewById(R.id.dayfive);
+                miniIconDayOne = (ImageView)itemView.findViewById(R.id.dayoneicon);
+                miniIconDayTwo = (ImageView)itemView.findViewById(R.id.daytwoicon);
+                miniIconDayThree = (ImageView)itemView.findViewById(R.id.daythreeicon);
+                miniIconDayFour = (ImageView)itemView.findViewById(R.id.dayfouricon);
+                miniIconDayFive = (ImageView)itemView.findViewById(R.id.dayfiveicon);
+                tempMinDayOne = (TextView)itemView.findViewById(R.id.dayonetempmin);
+                tempMinDayTwo = (TextView)itemView.findViewById(R.id.daytwotempmin);
+                tempMinDayThree = (TextView)itemView.findViewById(R.id.daythreetempmin);
+                tempMinDayFour = (TextView)itemView.findViewById(R.id.dayfourtempmin);
+                tempMinDayFive = (TextView)itemView.findViewById(R.id.dayfivetempmin);
+                tempMaxDayOne = (TextView)itemView.findViewById(R.id.dayonetempmax);
+                tempMaxDayTwo = (TextView)itemView.findViewById(R.id.daytwotempmax);
+                tempMaxDayThree = (TextView)itemView.findViewById(R.id.daythreetempmax);
+                tempMaxDayFour = (TextView)itemView.findViewById(R.id.dayfourtempmax);
+                tempMaxDayFive = (TextView)itemView.findViewById(R.id.dayfivetempmax);
+
+            }
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
+        Intent intent = getIntent();
+        String location = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        new GetForecastTask().execute(location);
 
-        mRecylerView = (RecyclerView)findViewById(R.id.rview);
-        mRecylerView.setHasFixedSize(true);
-
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecylerView.setLayoutManager(mLayoutManager);
-
-        String[] m = new String[] {"1","2","3","4"};
-        mAdapter = new RecyclerViewAdapter(m);
-        mRecylerView.setAdapter(mAdapter);
     }
 
 }
