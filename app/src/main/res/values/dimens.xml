@@ -3,6 +3,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="inter_card_spacing">5dp</dimen>
-    <dimen name="five_day_spacing">21dp</dimen>
+    <dimen name="five_day_spacing">18dp</dimen>
     <dimen name="five_day_img_dimens">24dp</dimen>
 </resources>

@@ -7,6 +7,8 @@ public class WeatherForecastCurrent
     private String temperature;
     private String wind;
     private String humidity;
+    private String sunriseTime;
+    private String sunsetTime;
     private int iconDrawable;
 
     public int getIconDrawable() {
@@ -59,6 +61,19 @@ public class WeatherForecastCurrent
         return humidity;
     }
 
+    public String getSunriseTime() {
+        return sunriseTime;
+    }
 
+    public void setSunriseTime(String sunriseTime) {
+        this.sunriseTime = sunriseTime;
+    }
 
+    public String getSunsetTime() {
+        return sunsetTime;
+    }
+
+    public void setSunsetTime(String sunsetTime) {
+        this.sunsetTime = sunsetTime;
+    }
 }

@@ -2,23 +2,18 @@ package com.fengpanhome.weatherapp;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.view.View.OnClickListener;
+import android.widget.Switch;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-
-
-public class MainActivity extends Activity implements OnClickListener
+public class MainActivity extends Activity implements OnClickListener, Switch.OnCheckedChangeListener
 {
-    public final static String EXTRA_MESSAGE = "com.fengpanhome.weatherapp.MESSAGE";
-
+    private String unit = "f";
+    private AutoCompleteTextView input;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -26,6 +21,9 @@ public class MainActivity extends Activity implements OnClickListener
         setContentView(R.layout.activity_main);
         ImageButton searchBtn = (ImageButton) findViewById(R.id.search_btn);
         searchBtn.setOnClickListener(this);
+        Switch unitToggle = (Switch) findViewById(R.id.unit_toggle);
+        unitToggle.setOnCheckedChangeListener(this);
+        input = (AutoCompleteTextView) findViewById(R.id.txtinput);
     }
 
     public void onClick(View v)
@@ -34,10 +32,34 @@ public class MainActivity extends Activity implements OnClickListener
         {
             case R.id.search_btn:
             {
-                AutoCompleteTextView input = (AutoCompleteTextView) findViewById(R.id.txtinput);
                 Intent intent = new Intent(this, ForecastActivity.class);
-                intent.putExtra(MainActivity.EXTRA_MESSAGE, input.getText().toString());
+                Bundle bundle = new Bundle();
+                bundle.putString("LOCATION", input.getText().toString());
+                bundle.putString("UNIT", unit);
+                intent.putExtras(bundle);
                 startActivity(intent);
+                break;
+            }
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+    {
+        switch (buttonView.getId())
+        {
+            case R.id.unit_toggle:
+            {
+                if (isChecked)
+                {
+                    unit = "c";
+                }
+                else
+                {
+                    unit = "f";
+                }
                 break;
             }
             default:

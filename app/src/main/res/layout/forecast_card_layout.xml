@@ -54,7 +54,7 @@
             android:id="@+id/precip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/precip"
+            android:text="@string/humidity"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingBottom="20dp"
@@ -76,12 +76,12 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:layout_below="@+id/wind"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
             android:layout_toEndOf="@+id/img_condition"
             android:layout_toRightOf="@+id/img_condition"
             android:text="@string/temp"
-            android:textSize="86sp"
+            android:textSize="76sp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingBottom="0dp" />
@@ -91,6 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
             android:layout_below="@+id/img_condition">
             <LinearLayout
                 android:id="@+id/dayoneview"
@@ -278,6 +279,30 @@
                     android:text="@string/temp_max"/>
             </LinearLayout>
         </LinearLayout>
+        <TextView
+            android:id="@+id/sunrise"
+            android:drawableStart="@drawable/sunrise"
+            android:drawableLeft="@drawable/sunrise"
+            android:layout_below="@+id/fivedayview"
+            android:layout_marginLeft="@dimen/five_day_spacing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:gravity="bottom"
+            android:text="  5:40am"/>
+        <TextView
+            android:id="@+id/sunset"
+            android:drawableStart="@drawable/sunset"
+            android:drawableLeft="@drawable/sunset"
+            android:layout_below="@+id/fivedayview"
+            android:layout_toEndOf="@+id/sunrise"
+            android:layout_toRightOf="@+id/sunrise"
+            android:layout_marginLeft="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:gravity="bottom"
+            android:text="  5:40pm"/>
     </RelativeLayout>
 </android.support.v7.widget.CardView>
 

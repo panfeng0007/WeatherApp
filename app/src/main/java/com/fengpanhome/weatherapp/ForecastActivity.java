@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,14 +27,15 @@ public class ForecastActivity extends Activity
         @Override
         protected WeatherForecast doInBackground(String... params)
         {
-            YahooWeather yahooWeather = new YahooWeather(params[0]);
-            try {
+            YahooWeather yahooWeather = new YahooWeather(params[0], params[1]);
+            try
+            {
                 WeatherForecast ret = yahooWeather.getFullForecast();
                 if (ret != null)
                     return ret;
-                else
-                    Log.d("RET: " , "is null");
-            } catch (IOException | JSONException e) {
+            }
+            catch (IOException | JSONException e)
+            {
                 e.printStackTrace();
             }
             return null;
@@ -105,6 +105,9 @@ public class ForecastActivity extends Activity
             holder.tempMaxDayThree.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(2).getTempMax());
             holder.tempMaxDayFour.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(3).getTempMax());
             holder.tempMaxDayFive.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(4).getTempMax());
+
+            holder.sunrise.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getSunriseTime());
+            holder.sunset.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getSunsetTime());
         }
 
         @Override
@@ -141,6 +144,8 @@ public class ForecastActivity extends Activity
             public TextView tempMaxDayThree;
             public TextView tempMaxDayFour;
             public TextView tempMaxDayFive;
+            public TextView sunrise;
+            public TextView sunset;
 
             public WeatherForecastViewHolder(View itemView)
             {
@@ -171,7 +176,8 @@ public class ForecastActivity extends Activity
                 tempMaxDayThree = (TextView)itemView.findViewById(R.id.daythreetempmax);
                 tempMaxDayFour = (TextView)itemView.findViewById(R.id.dayfourtempmax);
                 tempMaxDayFive = (TextView)itemView.findViewById(R.id.dayfivetempmax);
-
+                sunrise = (TextView)itemView.findViewById(R.id.sunrise);
+                sunset = (TextView)itemView.findViewById(R.id.sunset);
             }
         }
     }
@@ -181,9 +187,11 @@ public class ForecastActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
         Intent intent = getIntent();
-        String location = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        new GetForecastTask().execute(location);
-
+        Bundle bundle = intent.getExtras();
+        String location = bundle.getString("LOCATION");
+        String unit = bundle.getString("UNIT");
+        String[] params = new String[] {location, unit};
+        new GetForecastTask().execute(params);
     }
 
 }
