@@ -1,6 +1,8 @@
 package com.fengpanhome.weatherapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -52,6 +54,18 @@ public class ForecastActivity extends Activity
                 rv.setLayoutManager(new LinearLayoutManager(ForecastActivity.this));
                 rv.setHasFixedSize(true);
                 rv.setAdapter(new WeatherForecastAdapter(weatherForecastList));
+            }
+            else
+            {
+                AlertDialog alert = new AlertDialog.Builder(ForecastActivity.this).create();
+                alert.setTitle("Error");
+                alert.setMessage("Cannot find forecast for the location");
+                alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
             }
         }
     }

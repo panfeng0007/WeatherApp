@@ -17,10 +17,7 @@ public class YahooWeather
 {
     private String location = null;
     private String unit = null;
-    private String forecastRaw = null;
     private WeatherForecast fullForecast = null;
-    private WeatherForecastCurrent forecastCurrent = null;
-    private ArrayList<WeatherForecastFiveDay> forecastFiveDayList = null;
 
     public YahooWeather(String location, String unit)
     {
@@ -30,8 +27,9 @@ public class YahooWeather
 
     public WeatherForecast getFullForecast() throws IOException, JSONException
     {
+        generateForecast();
         if (fullForecast == null)
-            generateForecast();
+            return null;
         return fullForecast;
     }
 
@@ -58,10 +56,12 @@ public class YahooWeather
             {
                 buffer.append(line);
             }
-            forecastRaw = buffer.toString();
+            String forecastRaw = buffer.toString();
 
             JSONObject mainJson = new JSONObject(forecastRaw);
             JSONObject query = mainJson.getJSONObject("query");
+            if (query.getString("count").equals("0"))
+                return;
             JSONObject results = query.getJSONObject("results");
             JSONObject channel = results.getJSONObject("channel");
             JSONObject wind = channel.getJSONObject("wind");
@@ -88,7 +88,8 @@ public class YahooWeather
             String temp = condition.getString("temp");
             String skyCondition = condition.getString("text");
             String code = condition.getString("code");
-            forecastCurrent = new WeatherForecastCurrent();
+
+            WeatherForecastCurrent forecastCurrent = new WeatherForecastCurrent();
             forecastCurrent.setCityName(city);
             forecastCurrent.setSkyCondition(skyCondition);
             forecastCurrent.setHumidity(humidity);
@@ -119,9 +120,13 @@ public class YahooWeather
                 forecastCurrent.setIconDrawable(R.drawable.cold);
             else if (code.equals("26") || code.equals("27") || code.equals("28"))
                 forecastCurrent.setIconDrawable(R.drawable.cloudy);
-            else if (code.equals("29") || code.equals("30") || code.equals("44"))
+            else if (code.equals("29"))
+                forecastCurrent.setIconDrawable(R.drawable.partlycloudynight);
+            else if (code.equals("30") || code.equals("44"))
                 forecastCurrent.setIconDrawable(R.drawable.partlycloudyday);
-            else if (code.equals("31") || code.equals("32") || code.equals("33") || code.equals("34"))
+            else if (code.equals("31") || code.equals("33"))
+                forecastCurrent.setIconDrawable(R.drawable.clearnight);
+            else if (code.equals("32") || code.equals("33") || code.equals("34"))
                 forecastCurrent.setIconDrawable(R.drawable.sunny);
             else if (code.equals("36"))
                 forecastCurrent.setIconDrawable(R.drawable.hot);
@@ -132,8 +137,7 @@ public class YahooWeather
                 forecastCurrent.setIconDrawable(R.drawable.snowstorm);
 
             JSONArray forecast = item.getJSONArray("forecast");
-            forecastFiveDayList = new ArrayList<>();
-
+            ArrayList<WeatherForecastFiveDay> forecastFiveDayList = new ArrayList<>();
             for (int i = 0; i < 5; i++)
             {
                 WeatherForecastFiveDay forecastFiveDay = new WeatherForecastFiveDay();
@@ -146,41 +150,62 @@ public class YahooWeather
                 if (codeSingleDay.equals("0") || codeSingleDay.equals("1") || codeSingleDay.equals("2"))
                     forecastFiveDay.setIconDrawable(R.drawable.tornado);
                 else if (codeSingleDay.equals("3") || codeSingleDay.equals("4"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.storm);
                 else if (codeSingleDay.equals("5") || codeSingleDay.equals("6") || codeSingleDay.equals("7") || codeSingleDay.equals("8") ||
                         codeSingleDay.equals("9") || codeSingleDay.equals("10") || codeSingleDay.equals("18") || codeSingleDay.equals("35"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.sleet);
                 else if (codeSingleDay.equals("11") || codeSingleDay.equals("12") || codeSingleDay.equals("40"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.downpour);
                 else if (codeSingleDay.equals("13"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.lightsnow);
                 else if (codeSingleDay.equals("14") || codeSingleDay.equals("15") || codeSingleDay.equals("16") || codeSingleDay.equals("46"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.snow);
                 else if (codeSingleDay.equals("17"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.hail);
                 else if (codeSingleDay.equals("20") || codeSingleDay.equals("21") || codeSingleDay.equals("22"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.fogday);
                 else if (codeSingleDay.equals("23") || codeSingleDay.equals("24"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.windy);
                 else if (codeSingleDay.equals("25"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.cold);
                 else if (codeSingleDay.equals("26") || codeSingleDay.equals("27") || codeSingleDay.equals("28"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.cloudy);
-                else if (codeSingleDay.equals("29") || codeSingleDay.equals("30") || codeSingleDay.equals("44"))
+                else if (codeSingleDay.equals("29"))
+
+                    forecastFiveDay.setIconDrawable(R.drawable.partlycloudynight);
+                else if(codeSingleDay.equals("30") || codeSingleDay.equals("44"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.partlycloudyday);
-                else if (codeSingleDay.equals("31") || codeSingleDay.equals("32") || codeSingleDay.equals("33") || codeSingleDay.equals("34"))
+                else if (codeSingleDay.equals("31") || codeSingleDay.equals("33"))
+
+                    forecastFiveDay.setIconDrawable(R.drawable.clearnight);
+                else if (codeSingleDay.equals("32") || codeSingleDay.equals("33") || codeSingleDay.equals("34"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.sunny);
                 else if (codeSingleDay.equals("36"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.hot);
                 else if (codeSingleDay.equals("37") || codeSingleDay.equals("38") || codeSingleDay.equals("39") || codeSingleDay.equals("45")
                         || codeSingleDay.equals("47"))
+
                     forecastFiveDay.setIconDrawable(R.drawable.storm);
                 else if (codeSingleDay.equals("41") || codeSingleDay.equals("42") || codeSingleDay.equals("43"))
-                    forecastFiveDay.setIconDrawable(R.drawable.snowstorm);
 
+                    forecastFiveDay.setIconDrawable(R.drawable.snowstorm);
                 forecastFiveDayList.add(forecastFiveDay);
             }
-            fullForecast = new WeatherForecast(forecastCurrent, forecastFiveDayList);
+            fullForecast = new WeatherForecast(
+                    forecastCurrent, forecastFiveDayList);
         }
         catch (IOException e)
         {
