@@ -76,7 +76,7 @@ public class YahooWeather
             String windData = "Wind: " + windDirection + " at " + windSpeed + unitSpeed;
 
             JSONObject location = channel.getJSONObject("location");
-            String city = location.getString("city") + ", " + (location.getString("region").equals("") ? location.getString("country").toUpperCase() : location.getString("region"));
+            String city = location.getString("city") + ", " + location.getString("region") + " " + location.getString("country");
             JSONObject item = channel.getJSONObject("item");
             JSONObject condition = item.getJSONObject("condition");
             JSONObject atmosphere = channel.getJSONObject("atmosphere");
@@ -118,7 +118,7 @@ public class YahooWeather
             else if (code.equals("25"))
                 forecastCurrent.setIconDrawable(R.drawable.cold);
             else if (code.equals("26") || code.equals("27") || code.equals("28"))
-                forecastCurrent.setIconDrawable(R.drawable.clouds);
+                forecastCurrent.setIconDrawable(R.drawable.cloudy);
             else if (code.equals("29") || code.equals("30") || code.equals("44"))
                 forecastCurrent.setIconDrawable(R.drawable.partlycloudyday);
             else if (code.equals("31") || code.equals("32") || code.equals("33") || code.equals("34"))
@@ -165,7 +165,7 @@ public class YahooWeather
                 else if (codeSingleDay.equals("25"))
                     forecastFiveDay.setIconDrawable(R.drawable.cold);
                 else if (codeSingleDay.equals("26") || codeSingleDay.equals("27") || codeSingleDay.equals("28"))
-                    forecastFiveDay.setIconDrawable(R.drawable.clouds);
+                    forecastFiveDay.setIconDrawable(R.drawable.cloudy);
                 else if (codeSingleDay.equals("29") || codeSingleDay.equals("30") || codeSingleDay.equals("44"))
                     forecastFiveDay.setIconDrawable(R.drawable.partlycloudyday);
                 else if (codeSingleDay.equals("31") || codeSingleDay.equals("32") || codeSingleDay.equals("33") || codeSingleDay.equals("34"))

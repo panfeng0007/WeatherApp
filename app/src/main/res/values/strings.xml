@@ -28,4 +28,5 @@
     <string name="sunrise">Sunrise Image</string>
     <string name="units">Celsius  </string>
     <string name="celsius">Celsius</string>
+    <string name="forecast_title">Weather Forecast</string>
 </resources>

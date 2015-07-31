@@ -41,27 +41,14 @@
         android:layout_width="fill_parent"
         android:background="@android:color/darker_gray"
         android:layout_height="1dp" />
-    <TextView
-        android:text="@string/celsius"
-        android:layout_toLeftOf="@+id/unit_toggle"
-        android:layout_toStartOf="@+id/unit_toggle"
-        android:textSize="18sp"
-        android:layout_above="@+id/sep_bottom"
-        android:layout_below="@+id/sep_top"
-        android:layout_marginTop="22dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textColor="@android:color/background_dark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
     <Switch
         android:id="@+id/unit_toggle"
-        android:layout_width="wrap_content"
+        android:text="@string/celsius"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtinput"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textAllCaps="true"
         android:layout_marginTop="15dp"  />
 
 </RelativeLayout>
