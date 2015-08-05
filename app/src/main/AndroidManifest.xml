@@ -18,10 +18,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DebugActivity"
-            android:label="@string/title_activity_result" >
-        </activity>
-        <activity
             android:name=".ForecastActivity"
             android:label="@string/title_activity_forecast" >
         </activity>

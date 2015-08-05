@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
-import android.widget.ImageButton;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.Switch;
 
 public class MainActivity extends Activity implements OnClickListener, Switch.OnCheckedChangeListener
@@ -19,8 +19,10 @@ public class MainActivity extends Activity implements OnClickListener, Switch.On
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         ImageButton searchBtn = (ImageButton) findViewById(R.id.search_btn);
         searchBtn.setOnClickListener(this);
+
         Switch unitToggle = (Switch) findViewById(R.id.unit_toggle);
         unitToggle.setOnCheckedChangeListener(this);
         input = (AutoCompleteTextView) findViewById(R.id.txtinput);

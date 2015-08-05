@@ -93,8 +93,8 @@ public class ForecastActivity extends Activity
             holder.skyCondition.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getSkyCondition());
             holder.wind.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getWind());
             holder.temp.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getTemperature());
+            holder.temp.setCompoundDrawablesWithIntrinsicBounds(weatherForecastList.get(i).getWeatherForecastCurrent().getIconDrawable(), 0, 0, 0);
             holder.precipitation.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getHumidity());
-            holder.weatherIcon.setImageResource(weatherForecastList.get(i).getWeatherForecastCurrent().getIconDrawable());
 
             holder.daysOfWeekDayOne.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(0).getDayOfWeek());
             holder.daysOfWeekDayTwo.setText(weatherForecastList.get(i).getWeatherForecastFiveDayArrayList().get(1).getDayOfWeek());
@@ -137,7 +137,6 @@ public class ForecastActivity extends Activity
             public TextView wind;
             public TextView temp;
             public TextView precipitation;
-            public ImageView weatherIcon;
             public TextView daysOfWeekDayOne;
             public TextView daysOfWeekDayTwo;
             public TextView daysOfWeekDayThree;
@@ -169,7 +168,6 @@ public class ForecastActivity extends Activity
                 wind = (TextView) itemView.findViewById(R.id.wind);
                 temp = (TextView) itemView.findViewById(R.id.temp);
                 precipitation = (TextView) itemView.findViewById(R.id.precip);
-                weatherIcon = (ImageView) itemView.findViewById(R.id.img_condition);
                 daysOfWeekDayOne = (TextView)itemView.findViewById(R.id.dayone);
                 daysOfWeekDayTwo = (TextView)itemView.findViewById(R.id.daytwo);
                 daysOfWeekDayThree = (TextView)itemView.findViewById(R.id.daythree);

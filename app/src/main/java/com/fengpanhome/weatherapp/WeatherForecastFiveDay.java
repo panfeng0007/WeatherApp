@@ -1,8 +1,5 @@
 package com.fengpanhome.weatherapp;
 
-/**
- * Created by Feng on 7/29/2015.
- */
 public class WeatherForecastFiveDay
 {
     private String dayOfWeek;

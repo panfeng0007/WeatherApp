@@ -72,6 +72,12 @@ public class YahooWeather
             String unitSpeed = units.getString("speed");
 
             String windDirection = wind.getString("direction");
+            String oneZero = "0";
+            String twoZeroes = "00";
+            if (1 == 3 - windDirection.length())
+                windDirection = oneZero + windDirection;
+            else if (2 == 3 - windDirection.length())
+                windDirection = twoZeroes + windDirection;
             String windSpeed = wind.getString("speed");
             String windData = "Wind: " + windDirection + " at " + windSpeed + unitSpeed;
 
@@ -197,15 +203,12 @@ public class YahooWeather
                     forecastFiveDay.setIconDrawable(R.drawable.hot);
                 else if (codeSingleDay.equals("37") || codeSingleDay.equals("38") || codeSingleDay.equals("39") || codeSingleDay.equals("45")
                         || codeSingleDay.equals("47"))
-
                     forecastFiveDay.setIconDrawable(R.drawable.storm);
                 else if (codeSingleDay.equals("41") || codeSingleDay.equals("42") || codeSingleDay.equals("43"))
-
                     forecastFiveDay.setIconDrawable(R.drawable.snowstorm);
                 forecastFiveDayList.add(forecastFiveDay);
             }
-            fullForecast = new WeatherForecast(
-                    forecastCurrent, forecastFiveDayList);
+            fullForecast = new WeatherForecast(forecastCurrent, forecastFiveDayList);
         }
         catch (IOException e)
         {
