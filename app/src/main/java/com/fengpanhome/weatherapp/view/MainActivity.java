@@ -6,31 +6,33 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
-import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Switch;
 
 import com.fengpanhome.weatherapp.R;
 
-public class MainActivity extends Activity implements OnClickListener, Switch.OnCheckedChangeListener
+
+
+public class MainActivity extends Activity implements View.OnClickListener, Switch.OnCheckedChangeListener
 {
-    private String unit = "f";
+
+    private ImageButton searchBtn;
+    private Switch unitToggle;
     private AutoCompleteTextView input;
+    private String unit;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        ImageButton searchBtn = (ImageButton) findViewById(R.id.search_btn);
-        searchBtn.setOnClickListener(this);
-
-        Switch unitToggle = (Switch) findViewById(R.id.unit_toggle);
-        unitToggle.setOnCheckedChangeListener(this);
+        searchBtn = (ImageButton) findViewById(R.id.search_btn);
+        unitToggle = (Switch) findViewById(R.id.unit_toggle);
         input = (AutoCompleteTextView) findViewById(R.id.txtinput);
     }
 
+    @Override
     public void onClick(View v)
     {
         switch (v.getId())
@@ -38,10 +40,10 @@ public class MainActivity extends Activity implements OnClickListener, Switch.On
             case R.id.search_btn:
             {
                 Intent intent = new Intent(this, ForecastActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("LOCATION", input.getText().toString());
-                bundle.putString("UNIT", unit);
-                intent.putExtras(bundle);
+                Bundle args = new Bundle();
+                args.putString("LOCATION", input.getText().toString());
+                args.putString("UNIT", unit);
+                intent.putExtras(args);
                 startActivity(intent);
                 break;
             }
