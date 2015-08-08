@@ -1,4 +1,4 @@
-package com.fengpanhome.weatherapp;
+package com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.view;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.widget.CompoundButton;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Switch;
+
+import com.fengpanhome.weatherapp.R;
 
 public class MainActivity extends Activity implements OnClickListener, Switch.OnCheckedChangeListener
 {

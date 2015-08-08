@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light" >
         <activity
-            android:name=".MainActivity"
+            android:name=".com.fengpanhome.weatherapp.view.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ForecastActivity"
+            android:name=".com.fengpanhome.weatherapp.view.ForecastActivity"
             android:label="@string/title_activity_forecast" >
         </activity>
     </application>

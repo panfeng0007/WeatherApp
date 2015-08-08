@@ -1,4 +1,4 @@
-package com.fengpanhome.weatherapp;
+package com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.model;
 
 import java.util.ArrayList;
 

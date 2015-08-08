@@ -1,4 +1,4 @@
-package com.fengpanhome.weatherapp;
+package com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,15 +16,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fengpanhome.weatherapp.R;
+import com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.controller.YahooWeather;
+import com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.model.WeatherForecast;
+
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class ForecastActivity extends Activity
+
+public class ForecastActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener
 {
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private String location;
+    private String unit;
     ArrayList<WeatherForecast> weatherForecastList;
+
     private class GetForecastTask extends AsyncTask<String, Void, WeatherForecast>
     {
 
@@ -61,8 +72,10 @@ public class ForecastActivity extends Activity
                 alert.setTitle("Error");
                 alert.setMessage("Cannot find forecast for the location");
                 alert.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
+                        new DialogInterface.OnClickListener()
+                        {
+                            public void onClick(DialogInterface dialog, int which)
+                            {
                                 dialog.dismiss();
                             }
                         });
@@ -198,12 +211,31 @@ public class ForecastActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
+        swipeRefreshLayout = (SwipeRefreshLayout)findViewById(R.id.swipe_container);
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String location = bundle.getString("LOCATION");
-        String unit = bundle.getString("UNIT");
+        location = bundle.getString("LOCATION");
+        unit = bundle.getString("UNIT");
         String[] params = new String[] {location, unit};
+        swipeRefreshLayout.setColorSchemeResources(R.color.CornflowerBlue, R.color.Green, R.color.Pink, R.color.DarkKhaki);
+        swipeRefreshLayout.setOnRefreshListener(this);
         new GetForecastTask().execute(params);
     }
 
+    @Override
+    public void onRefresh()
+    {
+        swipeRefreshLayout.setRefreshing(true);
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                String[] params = new String[] {location, unit};
+                new GetForecastTask().execute(params);
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }, 5000);
+
+    }
 }

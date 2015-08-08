@@ -25,13 +25,13 @@
             android:id="@+id/city_name_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left">
+            android:gravity="start">
             <TextView
                 android:id="@+id/city_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/city_name"
-                android:gravity="left"
+                android:gravity="start"
                 android:textSize="22sp"
                 android:layout_marginBottom="10dp"
                 />
@@ -41,6 +41,7 @@
             android:id="@+id/conditions_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="start"
             android:layout_below="@+id/city_name_layout">
 
             <TextView
@@ -95,7 +96,7 @@
             android:id="@+id/fivedayview"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:gravity="left"
+            android:gravity="start"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="12dp"
@@ -106,6 +107,7 @@
                 android:paddingLeft="@dimen/five_day_spacing"
                 android:paddingEnd="@dimen/five_day_spacing"
                 android:paddingRight="@dimen/five_day_spacing"
+                android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -113,6 +115,7 @@
                     android:id="@+id/dayone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:text="@string/mon"/>
                 <ImageView
                     android:id="@+id/dayoneicon"
@@ -126,6 +129,7 @@
                     android:id="@+id/dayonetempmin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_min"/>
@@ -133,6 +137,7 @@
                     android:id="@+id/dayonetempmax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_max"/>
@@ -143,12 +148,14 @@
                 android:paddingLeft="@dimen/five_day_spacing"
                 android:paddingEnd="@dimen/five_day_spacing"
                 android:paddingRight="@dimen/five_day_spacing"
+                android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/daytwo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:text="@string/mon"/>
 
                 <ImageView
@@ -164,6 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="start"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_min"/>
                 <TextView
@@ -171,6 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="start"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_max"/>
             </LinearLayout>
@@ -180,6 +189,7 @@
                 android:paddingLeft="@dimen/five_day_spacing"
                 android:paddingEnd="@dimen/five_day_spacing"
                 android:paddingRight="@dimen/five_day_spacing"
+                android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -187,6 +197,7 @@
                     android:id="@+id/daythree"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:text="@string/mon"/>
                 <ImageView
                     android:id="@+id/daythreeicon"
@@ -201,12 +212,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="start"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_min"/>
                 <TextView
                     android:id="@+id/daythreetempmax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_max"/>
@@ -217,6 +230,7 @@
                 android:paddingLeft="@dimen/five_day_spacing"
                 android:paddingEnd="@dimen/five_day_spacing"
                 android:paddingRight="@dimen/five_day_spacing"
+                android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -224,6 +238,7 @@
                     android:id="@+id/dayfour"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:text="@string/mon"/>
                 <ImageView
                     android:id="@+id/dayfouricon"
@@ -237,6 +252,7 @@
                     android:id="@+id/dayfourtempmin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_min"/>
@@ -244,6 +260,7 @@
                     android:id="@+id/dayfourtempmax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_max"/>
@@ -251,6 +268,7 @@
             <LinearLayout
                 android:id="@+id/dayfiveview"
                 android:orientation="vertical"
+                android:gravity="start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -258,6 +276,7 @@
                     android:id="@+id/dayfive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:paddingLeft="@dimen/five_day_spacing"
                     android:paddingEnd="@dimen/five_day_spacing"
                     android:paddingRight="@dimen/five_day_spacing"
@@ -274,6 +293,7 @@
                     android:id="@+id/dayfivetempmin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_min"/>
@@ -281,6 +301,7 @@
                     android:id="@+id/dayfivetempmax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="start"
                     android:layout_gravity="center"
                     android:layout_marginBottom="@dimen/five_day_spacing"
                     android:text="@string/temp_max"/>
