@@ -1,11 +1,11 @@
-package com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.view;
+package com.fengpanhome.weatherapp.view;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 
 import com.fengpanhome.weatherapp.R;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

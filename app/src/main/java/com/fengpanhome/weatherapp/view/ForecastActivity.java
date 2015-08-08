@@ -1,4 +1,4 @@
-package com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.view;
+package com.fengpanhome.weatherapp.view;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fengpanhome.weatherapp.R;
-import com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.controller.YahooWeather;
-import com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.model.WeatherForecast;
+import com.fengpanhome.weatherapp.controller.YahooWeather;
+import com.fengpanhome.weatherapp.model.WeatherForecast;
 
 import org.json.JSONException;
 

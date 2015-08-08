@@ -1,9 +1,9 @@
-package com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.controller;
+package com.fengpanhome.weatherapp.controller;
 
 import com.fengpanhome.weatherapp.R;
-import com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.model.WeatherForecast;
-import com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.model.WeatherForecastCurrent;
-import com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.model.WeatherForecastFiveDay;
+import com.fengpanhome.weatherapp.model.WeatherForecast;
+import com.fengpanhome.weatherapp.model.WeatherForecastCurrent;
+import com.fengpanhome.weatherapp.model.WeatherForecastFiveDay;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.model;
+package com.fengpanhome.weatherapp.model;
 
 public class WeatherForecastCurrent
 {
