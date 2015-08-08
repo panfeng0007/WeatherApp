@@ -1,40 +1,38 @@
 package com.fengpanhome.weatherapp.view;
 
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 public class MainPagerAdapter extends FragmentStatePagerAdapter
 {
+    private static final int NUM_PAGES = 5;
 
-    private List<Fragment> screens;
-    public MainPagerAdapter(FragmentManager manager, List<Fragment> screens)
+    List<Fragment> internalViewList;
+    public MainPagerAdapter(FragmentManager manager, List<Fragment> list)
     {
         super(manager);
-        this.screens = screens;
-        notifyDataSetChanged();
+        if (list != null)
+            internalViewList = list;
+        else
+            internalViewList = new ArrayList<>();
+
     }
 
     @Override
     public Fragment getItem(int position)
     {
-        return screens.get(position);
+        return internalViewList.get(position);
     }
 
     @Override
     public int getCount()
     {
-        return screens.size();
-    }
-
-    @Override
-    public int getItemPosition(Object obj)
-    {
-        return PagerAdapter.POSITION_NONE;
+        return NUM_PAGES;
     }
 
 }

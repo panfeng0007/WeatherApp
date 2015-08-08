@@ -3,6 +3,7 @@ package com.fengpanhome.weatherapp.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
@@ -28,7 +29,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Swit
         setContentView(R.layout.activity_main);
 
         searchBtn = (ImageButton) findViewById(R.id.search_btn);
+        searchBtn.setOnClickListener(this);
         unitToggle = (Switch) findViewById(R.id.unit_toggle);
+        unitToggle.setOnCheckedChangeListener(this);
         input = (AutoCompleteTextView) findViewById(R.id.txtinput);
     }
 

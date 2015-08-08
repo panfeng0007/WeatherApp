@@ -15,7 +15,7 @@ public class ForecastActivity extends FragmentActivity
     private String location;
     private String unit;
     private MainPagerAdapter adapter;
-    private List<Fragment> screens;
+    private List<Fragment> fragmentList;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -27,10 +27,10 @@ public class ForecastActivity extends FragmentActivity
 
         ViewPager pager = (ViewPager)findViewById(R.id.view_pager);
 
-        screens = new ArrayList<>();
-        ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
-        screens.add(forecastFragment);
-        adapter = new MainPagerAdapter(getSupportFragmentManager(), screens);
+        ForecastFragment forecastFragment1 = ForecastFragment.newInstance(location, unit);
+        fragmentList = new ArrayList<>();
+        fragmentList.add(forecastFragment1);
+        adapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
         pager.setAdapter(adapter);
 
     }
