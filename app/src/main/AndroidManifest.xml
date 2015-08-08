@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fengpanhome.weatherapp" >
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -20,6 +21,10 @@
         <activity
             android:name=".com.fengpanhome.weatherapp.view.ForecastActivity"
             android:label="@string/title_activity_forecast" >
+        </activity>
+        <activity
+            android:name=".com.fengpanhome.weatherapp.view.SearchActivity"
+            android:label="@string/title_activity_search" >
         </activity>
     </application>
 

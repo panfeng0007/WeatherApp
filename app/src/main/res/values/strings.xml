@@ -29,4 +29,7 @@
     <string name="units">Celsius  </string>
     <string name="celsius">Celsius</string>
     <string name="forecast_title">Weather Forecast</string>
+    <string name="title_activity_search">SearchActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

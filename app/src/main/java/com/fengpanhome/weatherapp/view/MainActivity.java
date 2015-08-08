@@ -3,6 +3,9 @@ package com.fengpanhome.weatherapp.com.fengpanhome.weatherapp.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
@@ -16,6 +19,26 @@ public class MainActivity extends Activity implements OnClickListener, Switch.On
 {
     private String unit = "f";
     private AutoCompleteTextView input;
+    private ViewPager swipeView;
+
+    private class MainViewPagerAdapter extends FragmentPagerAdapter
+    {
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return false;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

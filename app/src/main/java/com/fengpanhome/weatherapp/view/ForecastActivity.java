@@ -235,7 +235,7 @@ public class ForecastActivity extends Activity implements SwipeRefreshLayout.OnR
                 new GetForecastTask().execute(params);
                 swipeRefreshLayout.setRefreshing(false);
             }
-        }, 5000);
+        }, 4000);
 
     }
 }
