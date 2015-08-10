@@ -77,22 +77,15 @@ public class YahooWeather
             String unitTemp = units.getString("temperature");
             String unitSpeed = units.getString("speed");
 
-            String windDirection = wind.getString("direction");
             String windData;
             String windSpeed = wind.getString("speed");
-            if (!windDirection.equals("") && !windSpeed.equals("") && !windSpeed.equals("0"))
+            if (!windSpeed.equals("") && !windSpeed.equals("0"))
             {
-                String oneZero = "0";
-                String twoZeroes = "00";
-                if (1 == 3 - windDirection.length())
-                    windDirection = oneZero + windDirection;
-                else if (2 == 3 - windDirection.length())
-                    windDirection = twoZeroes + windDirection;
-                windData = "Wind: " + windDirection + " at " + windSpeed + unitSpeed;
+                windData = "Wind " + windSpeed + unitSpeed;
             }
             else
             {
-                windData = "Wind: calm";
+                windData = "Wind calm";
             }
 
             JSONObject location = channel.getJSONObject("location");
