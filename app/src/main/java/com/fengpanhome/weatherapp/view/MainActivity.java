@@ -1,7 +1,9 @@
 package com.fengpanhome.weatherapp.view;
 
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
@@ -29,7 +31,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Swit
         searchBtn.setOnClickListener(this);
         Switch unitToggle = (Switch) findViewById(R.id.unit_toggle);
         unitToggle.setOnCheckedChangeListener(this);
-        input = (AutoCompleteTextView) findViewById(R.id.txtinput);
+        input = (AutoCompleteTextView) findViewById(R.id.location_input);
     }
 
     @Override

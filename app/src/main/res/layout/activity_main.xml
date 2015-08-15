@@ -3,6 +3,7 @@
     android:id="@+id/search_fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/LightSteelBlue"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -10,25 +11,27 @@
     >
     <LinearLayout
         android:id="@+id/searchview"
+        android:layout_marginTop="150dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <AutoCompleteTextView
-            android:id="@+id/txtinput"
+            android:id="@+id/location_input"
             android:layout_weight="1"
             android:inputType="textAutoComplete"
             android:hint="@string/location"
             android:layout_width="0dp"
-            android:layout_height="48dp"
+            android:layout_height="58dp"
             android:layout_marginBottom="15dp"
-            android:layout_marginTop="50dp" />
+            />
         <ImageButton
             android:id="@+id/search_btn"
             android:src="@drawable/ic_search_black_48dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:background="@drawable/circle_button"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
             android:contentDescription="@string/search"
-            android:layout_marginTop="50dp" />
+            />
     </LinearLayout>
     <View
         android:id="@+id/sep_top"
