@@ -20,6 +20,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Swit
 
     private AutoCompleteTextView input;
     private String unit;
+    private Switch unitToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Swit
 
         ImageButton searchBtn = (ImageButton) findViewById(R.id.search_btn);
         searchBtn.setOnClickListener(this);
-        Switch unitToggle = (Switch) findViewById(R.id.unit_toggle);
+        unitToggle = (Switch) findViewById(R.id.unit_toggle);
         unitToggle.setOnCheckedChangeListener(this);
         input = (AutoCompleteTextView) findViewById(R.id.location_input);
     }

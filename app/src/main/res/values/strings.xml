@@ -27,7 +27,7 @@
     <string name="temp_max">100F</string>
     <string name="sunrise">Sunrise Image</string>
     <string name="units">Celsius  </string>
-    <string name="celsius"><i>Celsius</i></string>
+    <string name="celsius"><i>Use Celsius</i></string>
     <string name="forecast_title">Weather Forecast</string>
     <string name="title_activity_search">SearchActivity</string>
 

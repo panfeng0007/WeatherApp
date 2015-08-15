@@ -4,10 +4,15 @@ import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fengpanhome.weatherapp.R;
@@ -15,7 +20,7 @@ import com.fengpanhome.weatherapp.R;
 import java.util.ArrayList;
 
 public class ForecastActivity extends FragmentActivity implements
-        View.OnClickListener, AddNewCityDialogFragment.AddNewCityDialogListener, ViewPager.OnTouchListener
+        View.OnClickListener, AddNewCityDialogFragment.AddNewCityDialogListener, OnTouchListener
 {
 
     private ArrayList<ForecastFragment> fragmentList;
@@ -23,6 +28,9 @@ public class ForecastActivity extends FragmentActivity implements
     private ViewPager mainPager;
     private ImageButton addButton;
     private DetailOnPageChangedListener listener;
+    private ArrayList<TextView> dots;
+    private LinearLayout dotsLayout;
+
     public class DetailOnPageChangedListener extends ViewPager.SimpleOnPageChangeListener
     {
         private int currentPage;
@@ -37,6 +45,7 @@ public class ForecastActivity extends FragmentActivity implements
         public void onPageSelected(int position)
         {
             currentPage = position;
+            highlightDot(position);
         }
 
         @Override
@@ -50,17 +59,10 @@ public class ForecastActivity extends FragmentActivity implements
             return currentPage;
         }
 
-        public void setCurrentPage(int pos)
-        {
-            currentPage = pos;
-        }
     }
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forecast);
 
+    private void initView()
+    {
         listener = new DetailOnPageChangedListener();
 
         Bundle args = getIntent().getExtras();
@@ -81,6 +83,62 @@ public class ForecastActivity extends FragmentActivity implements
         addButton.setOnClickListener(this);
         ImageButton removeButton = (ImageButton) findViewById(R.id.remove_btn);
         removeButton.setOnClickListener(this);
+
+        dots = new ArrayList<>();
+        dotsLayout = (LinearLayout)findViewById(R.id.view_pager_dots);
+        addDot();
+    }
+
+    private void addDot()
+    {
+        dotsLayout.removeAllViews();
+        TextView dot = new TextView(this);
+        dot.setText(Html.fromHtml("&#8226;"));
+        dot.setTextSize(30);
+        dot.setTextColor(getResources().getColor(android.R.color.darker_gray));
+
+        dots.add(dot);
+        for (TextView d: dots)
+        {
+            dotsLayout.addView(d);
+        }
+        dots.get(dots.size()-1).setTextColor(getResources().getColor(R.color.LightBlue));
+    }
+
+    private void removeDot(int pos)
+    {
+        dotsLayout.removeAllViews();
+        dots.remove(pos);
+        for (TextView d: dots)
+        {
+            d.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            d.setText(Html.fromHtml("&#8226;"));
+            d.setTextSize(30);
+            dotsLayout.addView(d);
+        }
+    }
+
+    private void highlightDot(int pos)
+    {
+        dotsLayout.removeAllViews();
+
+        for (TextView d: dots)
+        {
+            d.setTextColor(getResources().getColor(android.R.color.darker_gray));
+            d.setText(Html.fromHtml("&#8226;"));
+            dots.get(pos).setTextSize(30);
+            dotsLayout.addView(d);
+        }
+        dots.get(pos).setTextColor(getResources().getColor(R.color.LightBlue));
+        dots.get(pos).setText(Html.fromHtml("&#8226;"));
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_forecast);
+        initView();
     }
 
     private void showDialog()
@@ -105,13 +163,15 @@ public class ForecastActivity extends FragmentActivity implements
         if (fragmentList == null)
             fragmentList = new ArrayList<>();
         fragmentList.add(forecastFragment);
+        addDot();
         mainPagerAdapter.notifyDataSetChanged();
-        mainPager.setCurrentItem(fragmentList.size()-1);
+        mainPager.setCurrentItem(fragmentList.size() - 1);
     }
 
     private void removePage()
     {
         mainPager.addOnPageChangeListener(listener);
+        removeDot(listener.getCurrentPage());
         if (fragmentList != null)
             fragmentList.remove(listener.getCurrentPage());
         mainPagerAdapter.notifyDataSetChanged();
