@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/LightYellow">
+    android:background="@color/LightGoldenrodYellow">
 
 
     <android.support.v4.view.ViewPager
@@ -16,7 +16,7 @@
     <RelativeLayout
         android:id="@+id/view_pager_indicator"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="36dp"
         android:layout_below="@+id/main_pager">
         <LinearLayout
             android:id="@+id/view_pager_dots"
@@ -33,6 +33,7 @@
         android:id="@+id/button_group"
         android:layout_below="@id/view_pager_indicator"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal"
         android:layout_width="wrap_content"

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -94,7 +95,7 @@ public class ForecastActivity extends FragmentActivity implements
         dotsLayout.removeAllViews();
         TextView dot = new TextView(this);
         dot.setText(Html.fromHtml("&#8226;"));
-        dot.setTextSize(30);
+        dot.setTextSize(40);
         dot.setTextColor(getResources().getColor(android.R.color.darker_gray));
 
         dots.add(dot);
@@ -103,6 +104,7 @@ public class ForecastActivity extends FragmentActivity implements
             dotsLayout.addView(d);
         }
         dots.get(dots.size()-1).setTextColor(getResources().getColor(R.color.LightBlue));
+        dots.get(dots.size()-1).setTextSize(40);
     }
 
     private void removeDot(int pos)
@@ -113,9 +115,31 @@ public class ForecastActivity extends FragmentActivity implements
         {
             d.setTextColor(getResources().getColor(android.R.color.darker_gray));
             d.setText(Html.fromHtml("&#8226;"));
-            d.setTextSize(30);
+            d.setTextSize(40);
             dotsLayout.addView(d);
         }
+        if (dots.size() != 0)
+        {
+            if (dots.size() >= 2)
+            {
+                if (pos != dots.size())
+                {
+                    dots.get(pos).setTextColor(getResources().getColor(R.color.LightBlue));
+                    dots.get(pos).setTextSize(40);
+                }
+                else
+                {
+                    dots.get(pos - 1).setTextColor(getResources().getColor(R.color.LightBlue));
+                    dots.get(pos - 1).setTextSize(40);
+                }
+            }
+            else
+            {
+                dots.get(0).setTextColor(getResources().getColor(R.color.LightBlue));
+                dots.get(0).setTextSize(40);
+            }
+        }
+
     }
 
     private void highlightDot(int pos)
@@ -126,11 +150,12 @@ public class ForecastActivity extends FragmentActivity implements
         {
             d.setTextColor(getResources().getColor(android.R.color.darker_gray));
             d.setText(Html.fromHtml("&#8226;"));
-            dots.get(pos).setTextSize(30);
+            dots.get(pos).setTextSize(40);
             dotsLayout.addView(d);
         }
         dots.get(pos).setTextColor(getResources().getColor(R.color.LightBlue));
         dots.get(pos).setText(Html.fromHtml("&#8226;"));
+        dots.get(dots.size()-1).setTextSize(40);
     }
 
     @Override
@@ -157,7 +182,6 @@ public class ForecastActivity extends FragmentActivity implements
 
     private void addPage(String location, String unit)
     {
-        mainPager.removeAllViews();
         mainPager.addOnPageChangeListener(listener);
         ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
         if (fragmentList == null)
@@ -217,13 +241,4 @@ public class ForecastActivity extends FragmentActivity implements
         return false;
     }
 
-    @Override
-    public void onDestroy()
-    {
-        mainPager.removeAllViews();
-        mainPager.setAdapter(null);
-        mainPager.removeOnPageChangeListener(listener);
-        fragmentList.clear();
-        super.onDestroy();
-    }
 }
