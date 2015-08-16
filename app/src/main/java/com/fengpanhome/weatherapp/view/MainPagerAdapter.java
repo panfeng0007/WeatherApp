@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class MainPagerAdapter extends FragmentStatePagerAdapter
 {
 
-    private ArrayList<ForecastFragment> fragments;
+    private final ArrayList<ForecastFragment> fragments;
     public MainPagerAdapter(FragmentManager manager, ArrayList<ForecastFragment> ilist)
     {
         super(manager);

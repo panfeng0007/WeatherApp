@@ -1,38 +1,47 @@
 package com.fengpanhome.weatherapp.view;
 
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fengpanhome.weatherapp.R;
 
 import java.util.ArrayList;
 
 public class ForecastActivity extends FragmentActivity implements
-        View.OnClickListener, AddNewCityDialogFragment.AddNewCityDialogListener, OnTouchListener
+        View.OnClickListener, AddNewCityDialogFragment.AddNewCityDialogListener
 {
 
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+    private final Handler handler = new Handler();
+    private String location;
+    private String unit;
     private ArrayList<ForecastFragment> fragmentList;
     private MainPagerAdapter mainPagerAdapter;
     private ViewPager mainPager;
-    private ImageButton addButton;
-    private DetailOnPageChangedListener listener;
+    private DetailOnPageChangedListener pageChangeListener;
     private ArrayList<TextView> dots;
     private LinearLayout dotsLayout;
+    private ImageButton addButton;
+    private ImageButton removeButton;
+    private boolean showButtons;
 
-    public class DetailOnPageChangedListener extends ViewPager.SimpleOnPageChangeListener
+
+    private class DetailOnPageChangedListener extends ViewPager.SimpleOnPageChangeListener
     {
         private int currentPage;
 
@@ -62,32 +71,88 @@ public class ForecastActivity extends FragmentActivity implements
 
     }
 
-    private void initView()
+    private void initializeView()
     {
-        listener = new DetailOnPageChangedListener();
+        pageChangeListener = new DetailOnPageChangedListener();
+
 
         Bundle args = getIntent().getExtras();
-        String location = args.getString("LOCATION");
-        String unit = args.getString("UNIT");
+        location = args.getString("LOCATION");
+        unit = args.getString("UNIT");
+
+        progressBar = (ProgressBar) findViewById(R.id.progress);
 
         mainPager = (ViewPager)findViewById(R.id.main_pager);
-        ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
-        DetailOnPageChangedListener listener = new DetailOnPageChangedListener();
 
-        mainPager.addOnPageChangeListener(listener);
-        fragmentList = new ArrayList<>();
-        fragmentList.add(forecastFragment);
-        mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
-        mainPager.setAdapter(mainPagerAdapter);
+        new ProgressTaskOnCreate().execute();
 
-        addButton = (ImageButton)findViewById(R.id.add_btn);
+        showButtons = false;
+        addButton = (ImageButton) findViewById(R.id.add_btn);
         addButton.setOnClickListener(this);
-        ImageButton removeButton = (ImageButton) findViewById(R.id.remove_btn);
+
+        removeButton = (ImageButton) findViewById(R.id.remove_btn);
         removeButton.setOnClickListener(this);
+        if (showButtons)
+        {
+            addButton.setVisibility(View.VISIBLE);
+            removeButton.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            addButton.setVisibility(View.INVISIBLE);
+            removeButton.setVisibility(View.INVISIBLE);
+        }
 
         dots = new ArrayList<>();
         dotsLayout = (LinearLayout)findViewById(R.id.view_pager_dots);
         addDot();
+    }
+
+    private class ProgressTaskOnCreate extends AsyncTask<Void, Void, Void>
+    {
+
+        @Override
+        protected void onPreExecute()
+        {
+            progressBar.setVisibility(View.VISIBLE);
+            mainPager.addOnPageChangeListener(pageChangeListener);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params)
+        {
+            progressStatus = 0;
+            new Thread(new Runnable() {
+                public void run()
+                {
+                    while (progressStatus < 100)
+                    {
+                        progressStatus += 1;
+
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressBar.setProgress(progressStatus);
+
+                                ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
+                                fragmentList = new ArrayList<>();
+                                fragmentList.add(forecastFragment);
+                                DetailOnPageChangedListener listener = new DetailOnPageChangedListener();
+                                mainPager.addOnPageChangeListener(listener);
+                                mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
+                                mainPager.setAdapter(mainPagerAdapter);
+                            }
+                        });
+                    }
+                }
+            }).start();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result)
+        {
+        }
     }
 
     private void addDot()
@@ -163,7 +228,7 @@ public class ForecastActivity extends FragmentActivity implements
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forecast);
-        initView();
+        initializeView();
     }
 
     private void showDialog()
@@ -182,22 +247,22 @@ public class ForecastActivity extends FragmentActivity implements
 
     private void addPage(String location, String unit)
     {
-        mainPager.addOnPageChangeListener(listener);
+        //new ProgressTaskOnAddingPage().execute(location, unit);
         ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
         if (fragmentList == null)
             fragmentList = new ArrayList<>();
         fragmentList.add(forecastFragment);
-        addDot();
         mainPagerAdapter.notifyDataSetChanged();
+        addDot();
         mainPager.setCurrentItem(fragmentList.size() - 1);
     }
 
     private void removePage()
     {
-        mainPager.addOnPageChangeListener(listener);
-        removeDot(listener.getCurrentPage());
+        mainPager.addOnPageChangeListener(pageChangeListener);
+        removeDot(pageChangeListener.getCurrentPage());
         if (fragmentList != null)
-            fragmentList.remove(listener.getCurrentPage());
+            fragmentList.remove(pageChangeListener.getCurrentPage());
         mainPagerAdapter.notifyDataSetChanged();
         if (fragmentList.size() == 0)
             this.finish();
@@ -223,22 +288,37 @@ public class ForecastActivity extends FragmentActivity implements
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event)
+    public boolean onTouchEvent(MotionEvent event)
     {
-        if (event.getAction() == MotionEvent.ACTION_DOWN)
+        int action = event.getActionMasked();
+        final Animation fadeIn = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_in);
+        final Animation fadeOut = AnimationUtils.loadAnimation(getApplicationContext(), android.R.anim.fade_out);
+        switch (action)
         {
-            addButton.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "Touched!", Toast.LENGTH_SHORT).show();
-            return true;
+            case MotionEvent.ACTION_DOWN:
+                showButtons = !showButtons;
+                if (showButtons)
+                {
+                    addButton.setAnimation(fadeIn);
+                    removeButton.setAnimation(fadeIn);
+                    addButton.setVisibility(View.VISIBLE);
+                    removeButton.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    addButton.setAnimation(fadeOut);
+                    removeButton.setAnimation(fadeOut);
+                    addButton.setVisibility(View.INVISIBLE);
+                    removeButton.setVisibility(View.INVISIBLE);
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_OUTSIDE:
+                break;
         }
-
-        if (event.getAction() == MotionEvent.ACTION_UP)
-        {
-            addButton.setVisibility(View.INVISIBLE);
-            Toast.makeText(this, "Not Touched!", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return false;
+        return super.onTouchEvent(event);
     }
 
 }

@@ -31,7 +31,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
     private RecyclerView recyclerView;
     private String location;
     private String unit;
-    ArrayList<WeatherForecast> weatherForecastList;
+    private ArrayList<WeatherForecast> weatherForecastList;
 
     private class GetForecastTask extends AsyncTask<String, Void, WeatherForecast>
     {
