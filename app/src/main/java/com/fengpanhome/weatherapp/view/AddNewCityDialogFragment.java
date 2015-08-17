@@ -1,6 +1,7 @@
 package com.fengpanhome.weatherapp.view;
 
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.KeyEvent;
@@ -11,7 +12,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -19,10 +19,12 @@ import com.fengpanhome.weatherapp.R;
 
 
 public class AddNewCityDialogFragment extends DialogFragment implements
-        TextView.OnEditorActionListener, Switch.OnCheckedChangeListener, View.OnClickListener
+        TextView.OnEditorActionListener, View.OnClickListener
 {
     private AutoCompleteTextView locationIn;
     private String unit;
+    private Button fButton;
+    private Button cButton;
 
     @Override
     public void onClick(View v)
@@ -41,6 +43,35 @@ public class AddNewCityDialogFragment extends DialogFragment implements
                 AddNewCityDialogFragment.this.getDialog().cancel();
                 return;
             }
+            case R.id.f_button_dialog:
+                GradientDrawable fButtonDrawable;
+                GradientDrawable cButtonDrawable;
+            {
+                unit = "f";
+                fButton.setTextColor(getResources().getColor(R.color.hint_foreground_material_light));
+                cButton.setTextColor(getResources().getColor(R.color.White));
+
+                fButtonDrawable = (GradientDrawable) fButton.getBackground();
+                fButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
+
+                cButtonDrawable = (GradientDrawable) cButton.getBackground();
+                cButtonDrawable.setColor(getResources().getColor(R.color.hint_foreground_material_light));
+
+                break;
+            }
+            case R.id.c_button_dialog:
+            {
+                unit = "c";
+                cButton.setTextColor(getResources().getColor(R.color.hint_foreground_material_light));
+                fButton.setTextColor(getResources().getColor(R.color.White));
+
+                cButtonDrawable = (GradientDrawable) cButton.getBackground();
+                cButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
+
+                fButtonDrawable = (GradientDrawable) fButton.getBackground();
+                fButtonDrawable.setColor(getResources().getColor(R.color.hint_foreground_material_light));
+                break;
+            }
             default:break;
 
         }
@@ -58,7 +89,6 @@ public class AddNewCityDialogFragment extends DialogFragment implements
     {
         View v = inflater.inflate(R.layout.new_location_dialog, container);
         locationIn = (AutoCompleteTextView)v.findViewById(R.id.location_new);
-        Switch unitToggle = (Switch) v.findViewById(R.id.unit_toggle_new);
         locationIn.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE
@@ -68,23 +98,15 @@ public class AddNewCityDialogFragment extends DialogFragment implements
         Button cancelBtn = (Button)v.findViewById(R.id.dialog_cancel_btn);
         cancelBtn.setOnClickListener(this);
         locationIn.setOnEditorActionListener(this);
-        unitToggle.setOnCheckedChangeListener(this);
-        return v;
-    }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-    {
-        switch (buttonView.getId())
-        {
-            case R.id.unit_toggle_new:
-            {
-                if (isChecked)
-                    unit = "c";
-                else
-                    unit = "f";
-            }
-        }
+        fButton = (Button)v.findViewById(R.id.f_button_dialog);
+        fButton.setOnClickListener(this);
+        fButton.setText((char) 0x00b0 + "F");
+
+        cButton = (Button)v.findViewById(R.id.c_button_dialog);
+        cButton.setOnClickListener(this);
+        cButton.setText((char) 0x00b0 + "C");
+        return v;
     }
 
 

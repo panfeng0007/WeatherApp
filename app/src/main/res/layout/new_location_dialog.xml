@@ -34,6 +34,7 @@
         android:layout_marginEnd="10dp"
         android:background="@android:color/darker_gray"
         android:layout_height="1dp" />
+    <!--
     <Switch
         android:id="@+id/unit_toggle_new"
         android:text="@string/celsius"
@@ -42,7 +43,52 @@
         android:textSize="18sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+        !-->
 
+
+    <LinearLayout
+        android:id="@+id/units_toggle_buttons"
+        android:orientation="horizontal"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:gravity="bottom"
+            android:layout_weight="1"
+            android:textSize="28sp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/hint_foreground_material_light"
+            android:text="@string/units"/>
+
+        <Button
+            android:id="@+id/f_button_dialog"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:paddingBottom="5dp"
+            android:textSize="24sp"
+            android:elevation="0dp"
+            android:textColor="@color/hint_foreground_material_light"
+            android:background="@drawable/f_button_style"
+            android:shadowRadius="0"
+            />
+
+
+        <Button
+            android:id="@+id/c_button_dialog"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:paddingBottom="5dp"
+            android:background="@drawable/c_button_style"
+            android:textColor="@color/White"
+            android:textSize="24sp"
+            android:elevation="0dp"
+            android:shadowRadius="0"
+            />
+    </LinearLayout>
     <View
         android:id="@+id/sep_bottom"
         android:layout_marginTop="10dp"
