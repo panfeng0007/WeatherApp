@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,17 +20,18 @@ import com.fengpanhome.weatherapp.model.WeatherForecast;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 
-public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener
+public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Serializable
 {
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private String location;
     private String unit;
-    private ArrayList<WeatherForecast> weatherForecastList;
+
 
     private class GetForecastTask extends AsyncTask<String, Void, WeatherForecast>
     {
@@ -58,7 +58,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
         {
             if (forecast != null)
             {
-                weatherForecastList = new ArrayList<>();
+                ArrayList<WeatherForecast> weatherForecastList = new ArrayList<>();
                 weatherForecastList.add(forecast);
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -240,8 +240,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void run()
             {
-                String[] params = new String[] {location, unit};
-                new GetForecastTask().execute(params);
+                new GetForecastTask().execute(location, unit);
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 4000);

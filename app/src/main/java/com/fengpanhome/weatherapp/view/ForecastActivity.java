@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -84,8 +83,31 @@ public class ForecastActivity extends FragmentActivity implements
 
         mainPager = (ViewPager)findViewById(R.id.main_pager);
 
-        new ProgressTaskOnCreate().execute();
+        progressStatus = 0;
+        new Thread(new Runnable() {
+            public void run()
+            {
+                while (progressStatus < 100)
+                {
+                    progressStatus += 1;
 
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(progressStatus);
+
+                            ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
+                            fragmentList = new ArrayList<>();
+                            fragmentList.add(forecastFragment);
+                            DetailOnPageChangedListener listener = new DetailOnPageChangedListener();
+                            mainPager.addOnPageChangeListener(listener);
+                            mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
+                            mainPager.setAdapter(mainPagerAdapter);
+                        }
+                    });
+                }
+            }
+        }).start();
         showButtons = false;
         addButton = (ImageButton) findViewById(R.id.add_btn);
         addButton.setOnClickListener(this);
@@ -106,53 +128,6 @@ public class ForecastActivity extends FragmentActivity implements
         dots = new ArrayList<>();
         dotsLayout = (LinearLayout)findViewById(R.id.view_pager_dots);
         addDot();
-    }
-
-    private class ProgressTaskOnCreate extends AsyncTask<Void, Void, Void>
-    {
-
-        @Override
-        protected void onPreExecute()
-        {
-            progressBar.setVisibility(View.VISIBLE);
-            mainPager.addOnPageChangeListener(pageChangeListener);
-        }
-
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-            progressStatus = 0;
-            new Thread(new Runnable() {
-                public void run()
-                {
-                    while (progressStatus < 100)
-                    {
-                        progressStatus += 1;
-
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressBar.setProgress(progressStatus);
-
-                                ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
-                                fragmentList = new ArrayList<>();
-                                fragmentList.add(forecastFragment);
-                                DetailOnPageChangedListener listener = new DetailOnPageChangedListener();
-                                mainPager.addOnPageChangeListener(listener);
-                                mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
-                                mainPager.setAdapter(mainPagerAdapter);
-                            }
-                        });
-                    }
-                }
-            }).start();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result)
-        {
-        }
     }
 
     private void addDot()
@@ -240,14 +215,13 @@ public class ForecastActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onFinishEditDialog(String location, String unit)
+    public void onFinishEditDialog(final String location, final String unit)
     {
         addPage(location, unit);
     }
 
-    private void addPage(String location, String unit)
+    private void addPage(final String location, final String unit)
     {
-        //new ProgressTaskOnAddingPage().execute(location, unit);
         ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
         if (fragmentList == null)
             fragmentList = new ArrayList<>();
