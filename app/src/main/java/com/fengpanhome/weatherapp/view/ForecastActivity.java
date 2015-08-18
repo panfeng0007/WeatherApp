@@ -1,6 +1,5 @@
 package com.fengpanhome.weatherapp.view;
 
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
@@ -18,6 +17,10 @@ import android.widget.TextView;
 
 import com.fengpanhome.weatherapp.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class ForecastActivity extends FragmentActivity implements
@@ -66,6 +69,26 @@ public class ForecastActivity extends FragmentActivity implements
         public final int getCurrentPage()
         {
             return currentPage;
+        }
+
+    }
+
+    private void commitChanges()
+    {
+        try
+        {
+            FileOutputStream fileOut = new FileOutputStream("cities.weather", false);
+            ObjectOutputStream outputStream = new ObjectOutputStream(fileOut);
+            for (ForecastFragment f : fragmentList)
+            {
+                outputStream.writeObject(f);
+            }
+            outputStream.close();
+            fileOut.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
         }
 
     }
@@ -295,4 +318,10 @@ public class ForecastActivity extends FragmentActivity implements
         return super.onTouchEvent(event);
     }
 
+    @Override
+    public void onDestroy()
+    {
+        commitChanges();
+        super.onDestroy();
+    }
 }

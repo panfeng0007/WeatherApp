@@ -32,6 +32,15 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
     private String location;
     private String unit;
 
+    public String getLocation()
+    {
+        return location;
+    }
+
+    public String getUnit()
+    {
+        return unit;
+    }
 
     private class GetForecastTask extends AsyncTask<String, Void, WeatherForecast>
     {

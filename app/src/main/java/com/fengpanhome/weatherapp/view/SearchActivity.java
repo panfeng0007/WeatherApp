@@ -39,6 +39,9 @@ public class SearchActivity extends Activity implements View.OnClickListener
         fButton.setText((char) 0x00b0 + "F");
         cButton.setText((char) 0x00b0 + "C");
 
+        fButton.setTextColor(getResources().getColor(R.color.White));
+        cButton.setTextColor(getResources().getColor(R.color.White));
+
         fButton.setOnClickListener(this);
         cButton.setOnClickListener(this);
 
@@ -64,8 +67,6 @@ public class SearchActivity extends Activity implements View.OnClickListener
                 GradientDrawable cButtonDrawable;
             {
                 unit = "f";
-                fButton.setTextColor(getResources().getColor(R.color.hint_foreground_material_light));
-                cButton.setTextColor(getResources().getColor(R.color.White));
 
                 fButtonDrawable = (GradientDrawable) fButton.getBackground();
                 fButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
@@ -78,8 +79,6 @@ public class SearchActivity extends Activity implements View.OnClickListener
             case R.id.c_button:
             {
                 unit = "c";
-                cButton.setTextColor(getResources().getColor(R.color.hint_foreground_material_light));
-                fButton.setTextColor(getResources().getColor(R.color.White));
 
                 cButtonDrawable = (GradientDrawable) cButton.getBackground();
                 cButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));

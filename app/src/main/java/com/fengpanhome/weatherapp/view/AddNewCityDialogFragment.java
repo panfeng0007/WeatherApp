@@ -48,9 +48,6 @@ public class AddNewCityDialogFragment extends DialogFragment implements
                 GradientDrawable cButtonDrawable;
             {
                 unit = "f";
-                fButton.setTextColor(getResources().getColor(R.color.hint_foreground_material_light));
-                cButton.setTextColor(getResources().getColor(R.color.White));
-
                 fButtonDrawable = (GradientDrawable) fButton.getBackground();
                 fButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
 
@@ -62,9 +59,6 @@ public class AddNewCityDialogFragment extends DialogFragment implements
             case R.id.c_button_dialog:
             {
                 unit = "c";
-                cButton.setTextColor(getResources().getColor(R.color.hint_foreground_material_light));
-                fButton.setTextColor(getResources().getColor(R.color.White));
-
                 cButtonDrawable = (GradientDrawable) cButton.getBackground();
                 cButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
 
@@ -102,9 +96,11 @@ public class AddNewCityDialogFragment extends DialogFragment implements
         fButton = (Button)v.findViewById(R.id.f_button_dialog);
         fButton.setOnClickListener(this);
         fButton.setText((char) 0x00b0 + "F");
+        fButton.setTextColor(getResources().getColor(R.color.White));
 
         cButton = (Button)v.findViewById(R.id.c_button_dialog);
         cButton.setOnClickListener(this);
+        cButton.setTextColor(getResources().getColor(R.color.White));
         cButton.setText((char) 0x00b0 + "C");
         return v;
     }

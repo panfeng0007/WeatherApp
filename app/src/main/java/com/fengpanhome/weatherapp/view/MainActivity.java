@@ -1,18 +1,25 @@
 package com.fengpanhome.weatherapp.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.widget.ProgressBar;
 
 import com.fengpanhome.weatherapp.R;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
 public class MainActivity extends Activity
 {
 
     private ProgressBar progressBar;
-    private int progressStatus = 0;
-    final private Handler handler = new Handler();
 
     private void initializeView()
     {
@@ -25,33 +32,57 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeView();
-        progressStatus = 0;
-        new Thread(new Runnable() {
-            public void run()
+        try {
+
+            ArrayList<ForecastFragment> fragmentList = new ArrayList<>();
+            initializeView();
+            Intent intent;
+            if (new File("cities.weather").exists())
             {
-                while (progressStatus < 100)
+                FileInputStream fileIn = new FileInputStream("cities.weather");
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                while (in.readObject() != null) {
+                    ForecastFragment f = (ForecastFragment) in.readObject();
+                    if (f != null)
+                        fragmentList.add(f);
+                }
+                if (fragmentList.size() == 0) {
+                    intent = new Intent(MainActivity.this, SearchActivity.class);
+                    startActivity(intent);
+                    this.finish();
+                }
+                else
                 {
-                    progressStatus += 1;
+                    intent = new Intent(MainActivity.this, ForecastActivity.class);
+                    Bundle bundle = new Bundle();
+                    ArrayList<String> locations = new ArrayList<>();
+                    ArrayList<String> units = new ArrayList<>();
 
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setProgress(progressStatus);
+                    for (ForecastFragment f : fragmentList)
+                    {
+                        String location = f.getLocation();
+                        locations.add(location);
+                        String unit = f.getLocation();
+                        units.add(unit);
+                    }
 
-                            try
-                            {
-
-                            }
-                            catch (Exception e)
-                            {
-                               e.printStackTrace();
-                            }
-
-                        }
-                    });
+                    bundle.putStringArrayList("locations", locations);
+                    bundle.putStringArrayList("units", units);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    this.finish();
                 }
             }
-        }).start();
+            else
+            {
+                intent = new Intent(this, SearchActivity.class);
+                startActivity(intent);
+                this.finish();
+            }
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
