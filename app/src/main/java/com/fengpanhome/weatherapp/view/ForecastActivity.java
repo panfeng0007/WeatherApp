@@ -1,5 +1,6 @@
 package com.fengpanhome.weatherapp.view;
 
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -35,9 +36,9 @@ public class ForecastActivity extends FragmentActivity implements
     private DetailOnPageChangedListener pageChangeListener;
     private ArrayList<TextView> dots;
     private LinearLayout dotsLayout;
-    private LinearLayout buttonGroupLayout;
     private ImageButton addButton;
     private ImageButton removeButton;
+    private DepthPageTransformer depthPageTransformer;
     private boolean showButtons;
     ProgressBar progressBar;
 
@@ -177,9 +178,11 @@ public class ForecastActivity extends FragmentActivity implements
         }
         highlightDot(0);
         pageChangeListener = new DetailOnPageChangedListener();
+        depthPageTransformer = new DepthPageTransformer();
         mainPager.addOnPageChangeListener(pageChangeListener);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
         mainPager.setAdapter(mainPagerAdapter);
+        mainPager.setPageTransformer(true, depthPageTransformer);
         showButtons = false;
         addButton = (ImageButton) findViewById(R.id.add_btn);
         addButton.setOnClickListener(this);
@@ -197,7 +200,6 @@ public class ForecastActivity extends FragmentActivity implements
             removeButton.setVisibility(View.INVISIBLE);
         }
 
-        buttonGroupLayout = (LinearLayout)findViewById(R.id.button_group);
 
         progressBar.setVisibility(View.GONE);
     }
@@ -346,26 +348,29 @@ public class ForecastActivity extends FragmentActivity implements
         switch (action)
         {
             case MotionEvent.ACTION_DOWN:
-                showButtons = !showButtons;
-                if (showButtons)
+                if (!showButtons)
                 {
+                    showButtons = true;
                     addButton.setAnimation(fadeIn);
                     removeButton.setAnimation(fadeIn);
                     addButton.setVisibility(View.VISIBLE);
                     removeButton.setVisibility(View.VISIBLE);
                 }
-                else
-                {
-                    addButton.setAnimation(fadeOut);
-                    removeButton.setAnimation(fadeOut);
-                    addButton.setVisibility(View.INVISIBLE);
-                    removeButton.setVisibility(View.INVISIBLE);
-                }
                 break;
-            case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_OUTSIDE:
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (showButtons)
+                        {
+                            showButtons = false;
+                            addButton.setAnimation(fadeOut);
+                            removeButton.setAnimation(fadeOut);
+                            addButton.setVisibility(View.INVISIBLE);
+                            removeButton.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                }, 4000);
                 break;
         }
         return super.onTouchEvent(event);

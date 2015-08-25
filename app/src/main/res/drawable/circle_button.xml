@@ -2,7 +2,7 @@
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-    <item android:top="8px">
+    <item android:top="0px">
         <layer-list>
             <item>
                 <shape android:shape="oval">
@@ -83,29 +83,7 @@
             </item>
             <item>
                 <shape android:shape="oval">
-                    <solid android:color="#13000000"/>
-                    <padding
-                        android:bottom="1px"
-                        android:right="1px"
-                        android:top="1px"
-                        android:left="1px"
-                        />
-                </shape>
-            </item>
-            <item>
-                <shape android:shape="oval">
                     <solid android:color="#14000000"/>
-                    <padding
-                        android:bottom="1px"
-                        android:right="1px"
-                        android:top="1px"
-                        android:left="1px"
-                        />
-                </shape>
-            </item>
-            <item>
-                <shape android:shape="oval">
-                    <solid android:color="#15000000"/>
                     <padding
                         android:bottom="1px"
                         android:right="1px"
@@ -122,7 +100,7 @@
             android:color="?android:colorControlHighlight">
             <item android:id="@android:id/mask">
                 <shape android:shape="oval">
-                    <solid android:color="#FFBB00"/>
+                    <solid android:color="@color/LightBlue"/>
                 </shape>
             </item>
             <item>

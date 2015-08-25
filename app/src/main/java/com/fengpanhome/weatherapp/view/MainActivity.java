@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.fengpanhome.weatherapp.R;
 import com.google.gson.Gson;
@@ -78,6 +79,8 @@ public class MainActivity extends Activity
                 }
 
                 String jsonStr = outputStr.substring(sIndex, eIndex + 1);
+                Log.d("jsonStr", jsonStr);
+
                 JsonObject mapping = gson.fromJson(jsonStr, JsonObject.class);
                 locations = gson.fromJson(mapping.get("locations"), listType);
                 units = gson.fromJson(mapping.get("units"), listType);
@@ -107,11 +110,10 @@ public class MainActivity extends Activity
                 startActivity(intent);
                 this.finish();
             }
-            Thread.sleep(200);
             progressBar.setVisibility(View.GONE);
 
         }
-        catch (InterruptedException|IOException e)
+        catch (IOException e)
         {
             e.printStackTrace();
         }
