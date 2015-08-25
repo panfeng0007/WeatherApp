@@ -37,4 +37,7 @@
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
     <string name="removeButton">Remove a page</string>
+    <string name="metar_title">METAR</string>
+    <string name="taf_title">TAF</string>
+    <string name="metar_text">KBGM 251553Z 25009KT 220V300 10SM SCT039 21/12 A2993 RMK AO2 SLP126 T02110117</string>
 </resources>
