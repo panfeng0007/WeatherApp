@@ -3,17 +3,21 @@ package com.fengpanhome.weatherapp.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.fengpanhome.weatherapp.R;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class MainActivity extends Activity
@@ -31,43 +35,67 @@ public class MainActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initializeView();
+        try
+        {
+            progressBar.setVisibility(View.VISIBLE);
+            final File dir = getFilesDir();
+            final File file = new File(dir, "cities.weather");
 
-        try {
-
-            ArrayList<ForecastFragment> fragmentList = new ArrayList<>();
-            initializeView();
-            Intent intent;
-            if (new File("cities.weather").exists())
+            if (file.exists())
             {
-                FileInputStream fileIn = new FileInputStream("cities.weather");
-                ObjectInputStream in = new ObjectInputStream(fileIn);
-                while (in.readObject() != null) {
-                    ForecastFragment f = (ForecastFragment) in.readObject();
-                    if (f != null)
-                        fragmentList.add(f);
+                FileInputStream inputStream = new FileInputStream(file);
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                Gson gson = new Gson();
+
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                ArrayList<String> locations;
+                ArrayList<String> units;
+
+                Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+                String outputStr = "";
+
+                String line = "";
+                while (line != null)
+                {
+                    outputStr += line;
+                    line = reader.readLine();
                 }
-                if (fragmentList.size() == 0) {
-                    intent = new Intent(MainActivity.this, SearchActivity.class);
+                reader.close();
+                inputStreamReader.close();
+                inputStream.close();
+
+                int sIndex = 0;
+                int eIndex = 0;
+                int i = 0;
+                for (char c : outputStr.toCharArray())
+                {
+                    if (c == '{')
+                        sIndex = i;
+                    if (c == '}')
+                        eIndex = i;
+                    i++;
+                }
+
+                String jsonStr = outputStr.substring(sIndex, eIndex + 1);
+                JsonObject mapping = gson.fromJson(jsonStr, JsonObject.class);
+                locations = gson.fromJson(mapping.get("locations"), listType);
+                units = gson.fromJson(mapping.get("units"), listType);
+
+                if (locations == null || units == null || locations.size() == 0 || units.size() == 0)
+                {
+                    Intent intent = new Intent(this, SearchActivity.class);
                     startActivity(intent);
                     this.finish();
                 }
                 else
                 {
-                    intent = new Intent(MainActivity.this, ForecastActivity.class);
+                    Intent intent = new Intent(this, ForecastActivity.class);
                     Bundle bundle = new Bundle();
-                    ArrayList<String> locations = new ArrayList<>();
-                    ArrayList<String> units = new ArrayList<>();
+                    bundle.putString("ACTIVITY", "MainActivity");
+                    bundle.putStringArrayList("LOCATIONS", locations);
+                    bundle.putStringArrayList("UNITS", units);
 
-                    for (ForecastFragment f : fragmentList)
-                    {
-                        String location = f.getLocation();
-                        locations.add(location);
-                        String unit = f.getLocation();
-                        units.add(unit);
-                    }
-
-                    bundle.putStringArrayList("locations", locations);
-                    bundle.putStringArrayList("units", units);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     this.finish();
@@ -75,14 +103,24 @@ public class MainActivity extends Activity
             }
             else
             {
-                intent = new Intent(this, SearchActivity.class);
+                Intent intent = new Intent(this, SearchActivity.class);
                 startActivity(intent);
                 this.finish();
             }
+            Thread.sleep(200);
+            progressBar.setVisibility(View.GONE);
+
         }
-        catch (IOException | ClassNotFoundException e)
+        catch (InterruptedException|IOException e)
         {
             e.printStackTrace();
+        }
+        catch (ClassCastException e)
+        {
+            e.printStackTrace();
+            Intent intent = new Intent(this, SearchActivity.class);
+            startActivity(intent);
+            this.finish();
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.fengpanhome.weatherapp.view;
 
-import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -14,7 +13,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.fengpanhome.weatherapp.R;
 
 import java.io.File;
@@ -27,20 +25,21 @@ public class ForecastActivity extends FragmentActivity implements
         View.OnClickListener, AddNewCityDialogFragment.AddNewCityDialogListener
 {
 
-    private ProgressBar progressBar;
-    private int progressStatus = 0;
-    private final Handler handler = new Handler();
     private String location;
     private String unit;
+    private ArrayList<String> locations;
+    private ArrayList<String> units;
     private ArrayList<ForecastFragment> fragmentList;
     private MainPagerAdapter mainPagerAdapter;
     private ViewPager mainPager;
     private DetailOnPageChangedListener pageChangeListener;
     private ArrayList<TextView> dots;
     private LinearLayout dotsLayout;
+    private LinearLayout buttonGroupLayout;
     private ImageButton addButton;
     private ImageButton removeButton;
     private boolean showButtons;
+    ProgressBar progressBar;
 
 
     private class DetailOnPageChangedListener extends ViewPager.SimpleOnPageChangeListener
@@ -73,16 +72,46 @@ public class ForecastActivity extends FragmentActivity implements
 
     }
 
-    private void commitChanges()
+    private String toJsonString()
+    {
+        String ret = "{";
+        ret += "\"locations\": [";
+        int i = 0;
+        for (ForecastFragment f : fragmentList)
+        {
+            if (i != fragmentList.size() - 1)
+                ret += "\"" + f.getLocation() + "\", ";
+            else
+                ret += "\"" + f.getLocation() + "\"";
+            i++;
+        }
+        i = 0;
+        ret += "],";
+        ret += "\"units\": [";
+        for (ForecastFragment f : fragmentList)
+        {
+            if (i != fragmentList.size() - 1)
+                ret += "\"" + f.getUnit() + "\", ";
+            else
+                ret += "\"" + f.getUnit() + "\"";
+            i++;
+        }
+
+        ret += "] }" + "\n";
+        return ret;
+    }
+
+    private void commitChangesToFile()
     {
         try
         {
-            FileOutputStream fileOut = new FileOutputStream("cities.weather", false);
+            final File dir = getFilesDir();
+            final File file = new File(dir, "cities.weather");
+
+            FileOutputStream fileOut = new FileOutputStream(file, false);
             ObjectOutputStream outputStream = new ObjectOutputStream(fileOut);
-            for (ForecastFragment f : fragmentList)
-            {
-                outputStream.writeObject(f);
-            }
+            String jsonStr = toJsonString();
+            outputStream.write(jsonStr.getBytes());
             outputStream.close();
             fileOut.close();
         }
@@ -99,38 +128,58 @@ public class ForecastActivity extends FragmentActivity implements
 
 
         Bundle args = getIntent().getExtras();
-        location = args.getString("LOCATION");
-        unit = args.getString("UNIT");
+        String previousActivity = args.getString("ACTIVITY");
+        if (previousActivity != null)
+        {
+            if (previousActivity.equals("SearchActivity"))
+            {
+                location = args.getString("LOCATION");
+                unit = args.getString("UNIT");
+                locations = null;
+                units = null;
+            }
+            else if (previousActivity.equals("MainActivity"))
+            {
+                location = null;
+                unit = null;
+                locations = args.getStringArrayList("LOCATIONS");
+                units = args.getStringArrayList("UNITS");
+                if (locations == null)
+                    locations = new ArrayList<>();
+                if (units == null)
+                    units = new ArrayList<>();
+            }
+
+        }
 
         progressBar = (ProgressBar) findViewById(R.id.progress);
-
         mainPager = (ViewPager)findViewById(R.id.main_pager);
-
-        progressStatus = 0;
-        new Thread(new Runnable() {
-            public void run()
+        progressBar.setVisibility(View.VISIBLE);
+        fragmentList = new ArrayList<>();
+        dots = new ArrayList<>();
+        dotsLayout = (LinearLayout)findViewById(R.id.view_pager_dots);
+        if (locations != null && units != null)
+        {
+            for (int i = 0; i < locations.size(); i++)
             {
-                while (progressStatus < 100)
-                {
-                    progressStatus += 1;
-
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setProgress(progressStatus);
-
-                            ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
-                            fragmentList = new ArrayList<>();
-                            fragmentList.add(forecastFragment);
-                            DetailOnPageChangedListener listener = new DetailOnPageChangedListener();
-                            mainPager.addOnPageChangeListener(listener);
-                            mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
-                            mainPager.setAdapter(mainPagerAdapter);
-                        }
-                    });
-                }
+                String location = locations.get(i);
+                String unit = units.get(i);
+                ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
+                fragmentList.add(forecastFragment);
+                addDot();
             }
-        }).start();
+        }
+        if (location != null && unit != null)
+        {
+            ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
+            fragmentList.add(forecastFragment);
+            addDot();
+        }
+        highlightDot(0);
+        pageChangeListener = new DetailOnPageChangedListener();
+        mainPager.addOnPageChangeListener(pageChangeListener);
+        mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
+        mainPager.setAdapter(mainPagerAdapter);
         showButtons = false;
         addButton = (ImageButton) findViewById(R.id.add_btn);
         addButton.setOnClickListener(this);
@@ -148,9 +197,9 @@ public class ForecastActivity extends FragmentActivity implements
             removeButton.setVisibility(View.INVISIBLE);
         }
 
-        dots = new ArrayList<>();
-        dotsLayout = (LinearLayout)findViewById(R.id.view_pager_dots);
-        addDot();
+        buttonGroupLayout = (LinearLayout)findViewById(R.id.button_group);
+
+        progressBar.setVisibility(View.GONE);
     }
 
     private void addDot()
@@ -245,6 +294,7 @@ public class ForecastActivity extends FragmentActivity implements
 
     private void addPage(final String location, final String unit)
     {
+        progressBar.setVisibility(View.VISIBLE);
         ForecastFragment forecastFragment = ForecastFragment.newInstance(location, unit);
         if (fragmentList == null)
             fragmentList = new ArrayList<>();
@@ -252,15 +302,18 @@ public class ForecastActivity extends FragmentActivity implements
         mainPagerAdapter.notifyDataSetChanged();
         addDot();
         mainPager.setCurrentItem(fragmentList.size() - 1);
+        progressBar.setVisibility(View.GONE);
     }
 
     private void removePage()
     {
+        progressBar.setVisibility(View.VISIBLE);
         mainPager.addOnPageChangeListener(pageChangeListener);
         removeDot(pageChangeListener.getCurrentPage());
         if (fragmentList != null)
             fragmentList.remove(pageChangeListener.getCurrentPage());
         mainPagerAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
         if (fragmentList.size() == 0)
             this.finish();
     }
@@ -319,9 +372,9 @@ public class ForecastActivity extends FragmentActivity implements
     }
 
     @Override
-    public void onDestroy()
+    public void onBackPressed()
     {
-        commitChanges();
-        super.onDestroy();
+        commitChangesToFile();
+        finish();
     }
 }

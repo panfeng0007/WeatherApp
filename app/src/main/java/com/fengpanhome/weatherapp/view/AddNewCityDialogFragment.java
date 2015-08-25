@@ -26,6 +26,10 @@ public class AddNewCityDialogFragment extends DialogFragment implements
     private Button fButton;
     private Button cButton;
 
+    public AddNewCityDialogFragment()
+    {
+    }
+
     @Override
     public void onClick(View v)
     {
@@ -66,8 +70,8 @@ public class AddNewCityDialogFragment extends DialogFragment implements
                 fButtonDrawable.setColor(getResources().getColor(R.color.hint_foreground_material_light));
                 break;
             }
-            default:break;
-
+            default:
+                break;
         }
 
     }
@@ -76,11 +80,11 @@ public class AddNewCityDialogFragment extends DialogFragment implements
     {
         void onFinishEditDialog(String location, String unit);
     }
-    public AddNewCityDialogFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+        unit = "f";
         View v = inflater.inflate(R.layout.new_location_dialog, container);
         locationIn = (AutoCompleteTextView)v.findViewById(R.id.location_new);
         locationIn.requestFocus();

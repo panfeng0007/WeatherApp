@@ -26,7 +26,7 @@ public class SearchActivity extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         initializeView();
-
+        unit = "f";
     }
 
     private void initializeView()
@@ -44,7 +44,6 @@ public class SearchActivity extends Activity implements View.OnClickListener
 
         fButton.setOnClickListener(this);
         cButton.setOnClickListener(this);
-
     }
 
     @Override
@@ -56,10 +55,12 @@ public class SearchActivity extends Activity implements View.OnClickListener
             {
                 Intent intent = new Intent(this, ForecastActivity.class);
                 Bundle args = new Bundle();
+                args.putString("ACTIVITY", "SearchActivity");
                 args.putString("LOCATION", input.getText().toString());
                 args.putString("UNIT", unit);
                 intent.putExtras(args);
                 startActivity(intent);
+                this.finish();
                 break;
             }
             case R.id.f_button:

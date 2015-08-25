@@ -1,5 +1,6 @@
 package com.fengpanhome.weatherapp.view;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -226,6 +227,8 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
     {
         View v = inflater.inflate(R.layout.fragment_forecast, container, false);
         recyclerView = (RecyclerView)v.findViewById(R.id.forecast_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(new WeatherForecastAdapter(new ArrayList<WeatherForecast>()));
         swipeRefreshLayout = (SwipeRefreshLayout)v.findViewById(R.id.swipe_container);
         return v;
     }
