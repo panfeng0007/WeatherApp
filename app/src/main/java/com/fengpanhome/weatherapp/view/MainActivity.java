@@ -79,7 +79,6 @@ public class MainActivity extends Activity
                 }
 
                 String jsonStr = outputStr.substring(sIndex, eIndex + 1);
-                Log.d("jsonStr", jsonStr);
 
                 JsonObject mapping = gson.fromJson(jsonStr, JsonObject.class);
                 locations = gson.fromJson(mapping.get("locations"), listType);

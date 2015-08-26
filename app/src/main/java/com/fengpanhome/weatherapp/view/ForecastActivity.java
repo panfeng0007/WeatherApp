@@ -38,7 +38,6 @@ public class ForecastActivity extends FragmentActivity implements
     private LinearLayout dotsLayout;
     private ImageButton addButton;
     private ImageButton removeButton;
-    private DepthPageTransformer depthPageTransformer;
     private boolean showButtons;
     ProgressBar progressBar;
 
@@ -91,11 +90,14 @@ public class ForecastActivity extends FragmentActivity implements
         ret += "\"units\": [";
         for (ForecastFragment f : fragmentList)
         {
-            if (i != fragmentList.size() - 1)
-                ret += "\"" + f.getUnit() + "\", ";
-            else
-                ret += "\"" + f.getUnit() + "\"";
-            i++;
+            if (f.getLocation() != null && f.getUnit() != null)
+            {
+                if (i != fragmentList.size() - 1)
+                    ret += "\"" + f.getUnit() + "\", ";
+                else
+                    ret += "\"" + f.getUnit() + "\"";
+                i++;
+            }
         }
 
         ret += "] }" + "\n";
@@ -106,9 +108,15 @@ public class ForecastActivity extends FragmentActivity implements
     {
         try
         {
+
             final File dir = getFilesDir();
             final File file = new File(dir, "cities.weather");
 
+            if (fragmentList.size() == 0)
+            {
+                file.delete();
+                return;
+            }
             FileOutputStream fileOut = new FileOutputStream(file, false);
             ObjectOutputStream outputStream = new ObjectOutputStream(fileOut);
             String jsonStr = toJsonString();
@@ -178,7 +186,7 @@ public class ForecastActivity extends FragmentActivity implements
         }
         highlightDot(0);
         pageChangeListener = new DetailOnPageChangedListener();
-        depthPageTransformer = new DepthPageTransformer();
+        DepthPageTransformer depthPageTransformer = new DepthPageTransformer();
         mainPager.addOnPageChangeListener(pageChangeListener);
         mainPagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), fragmentList);
         mainPager.setAdapter(mainPagerAdapter);
@@ -317,7 +325,10 @@ public class ForecastActivity extends FragmentActivity implements
         mainPagerAdapter.notifyDataSetChanged();
         progressBar.setVisibility(View.GONE);
         if (fragmentList.size() == 0)
+        {
+            commitChangesToFile();
             this.finish();
+        }
     }
     @Override
     public void onClick(View v)

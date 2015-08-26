@@ -180,7 +180,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
                 case TAF_VIEW:
                 {
                     holder.metarTitle.setText(R.string.taf_title);
-                    holder.metarTafCard.setBackgroundColor(getResources().getColor(R.color.LightSeaGreen));
+                    holder.metarTafCard.setBackgroundColor(getResources().getColor(R.color.LightGreen));
                     TextView temp = new TextView(getActivity());
                     temp.setText(R.string.metar_text);
                     temp.setTextSize(16);

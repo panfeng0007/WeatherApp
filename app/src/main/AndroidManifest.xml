@@ -11,8 +11,8 @@
         android:theme="@style/Theme.AppCompat.Light" >
         <activity android:name=".view.SearchActivity"
             android:noHistory="true"
+            android:windowSoftInputMode="adjustResize"
            >
-
         </activity>
         <activity
             android:name="com.fengpanhome.weatherapp.view.MainActivity" >
