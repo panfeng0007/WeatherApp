@@ -18,13 +18,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-public class YahooWeather
+public class YahooWeatherInquiry
 {
     private String location = null;
     private String unit = null;
     private WeatherForecast fullForecast = null;
 
-    public YahooWeather(String location, String unit)
+    public YahooWeatherInquiry(String location, String unit)
     {
         this.location = location;
         this.unit = unit;

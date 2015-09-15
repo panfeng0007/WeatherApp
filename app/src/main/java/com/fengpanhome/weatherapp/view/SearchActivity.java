@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -191,51 +190,22 @@ public class SearchActivity extends Activity implements View.OnClickListener, Co
             }
             case R.id.query_metar:
             {
-                if (isChecked)
-                {
-                    isCheckingMetar = true;
-                }
-                else
-                {
-                    isCheckingMetar = false;
-                }
+                isCheckingMetar = isChecked;
                 break;
             }
             case R.id.query_taf:
             {
-                if (isChecked)
-                {
-
-                    isCheckingTaf = true;
-                }
-                else
-                {
-                    isCheckingTaf = false;
-                }
+                isCheckingTaf = isChecked;
                 break;
             }
             case R.id.query_pirep:
             {
-                if (isChecked)
-                {
-                    isCheckingPirep = true;
-                }
-                else
-                {
-                    isCheckingPirep = false;
-                }
+                isCheckingPirep = isChecked;
                 break;
             }
             case R.id.query_area_forecast:
             {
-                if (isChecked)
-                {
-                    isCheckingAreaForecast = true;
-                }
-                else
-                {
-                    isCheckingAreaForecast = false;
-                }
+                isCheckingAreaForecast = isChecked;
                 break;
             }
             default:

@@ -16,7 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fengpanhome.weatherapp.R;
-import com.fengpanhome.weatherapp.controller.YahooWeather;
+import com.fengpanhome.weatherapp.controller.YahooWeatherInquiry;
+import com.fengpanhome.weatherapp.model.AviationInfo;
 import com.fengpanhome.weatherapp.model.WeatherForecast;
 
 import org.json.JSONException;
@@ -33,6 +34,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
     private RecyclerView recyclerView;
     private String location;
     private String unit;
+    private AviationInfo aviationInfo;
 
     public String getLocation()
     {
@@ -50,10 +52,10 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
         @Override
         protected WeatherForecast doInBackground(String... params)
         {
-            YahooWeather yahooWeather = new YahooWeather(params[0], params[1]);
+            YahooWeatherInquiry yahooWeatherInquiry = new YahooWeatherInquiry(params[0], params[1]);
             try
             {
-                WeatherForecast ret = yahooWeather.getFullForecast();
+                WeatherForecast ret = yahooWeatherInquiry.getFullForecast();
                 if (ret != null)
                     return ret;
             }
@@ -84,7 +86,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
         private static final int FORECAST_VIEW = 0;
         private static final int METAR_VIEW = 1;
         private static final int TAF_VIEW = 2;
-        private static final int PIREP_VIEW = 3;
+        private static final int AREA_FORECAST_VIEW = 3;
 
         private ArrayList<WeatherForecast> weatherForecastList;
 
@@ -172,7 +174,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
                 {
                     holder.metarTitle.setText(R.string.metar_title);
                     TextView temp = new TextView(getActivity());
-                    temp.setText(R.string.metar_text);
+                    temp.setText(R.string.area_forecast_text);
                     temp.setTextSize(16);
                     holder.metarLayout.addView(temp);
                     break;
@@ -182,7 +184,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
                     holder.metarTitle.setText(R.string.taf_title);
                     holder.metarTafCard.setBackgroundColor(getResources().getColor(R.color.LightGreen));
                     TextView temp = new TextView(getActivity());
-                    temp.setText(R.string.metar_text);
+                    temp.setText(R.string.area_forecast_text);
                     temp.setTextSize(16);
                     holder.metarLayout.addView(temp);
                     break;
