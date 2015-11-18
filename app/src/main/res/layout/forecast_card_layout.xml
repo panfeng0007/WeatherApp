@@ -49,8 +49,7 @@
                 android:gravity="start"
                 android:paddingBottom="20dp"
                 android:paddingEnd="10dp"
-                android:paddingRight="10dp"
-                android:paddingLeft="0dp"
+                android:paddingStart="0dp"
                 android:text="@string/sky_condition"/>
             <TextView
                 android:id="@+id/wind"

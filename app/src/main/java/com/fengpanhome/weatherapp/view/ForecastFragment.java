@@ -73,8 +73,6 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
             {
                 ArrayList<WeatherForecast> weatherForecastList = new ArrayList<>();
                 weatherForecastList.add(forecast);
-                weatherForecastList.add(forecast);
-                weatherForecastList.add(forecast);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(new WeatherForecastAdapter(weatherForecastList));

@@ -4,6 +4,7 @@ package com.fengpanhome.weatherapp.view;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.fengpanhome.weatherapp.R;
@@ -53,10 +53,10 @@ public class AddNewCityDialogFragment extends DialogFragment implements
             {
                 unit = "f";
                 fButtonDrawable = (GradientDrawable) fButton.getBackground();
-                fButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
+                fButtonDrawable.setColor(ContextCompat.getColor(getContext(), R.color.accent_material_dark));
 
                 cButtonDrawable = (GradientDrawable) cButton.getBackground();
-                cButtonDrawable.setColor(getResources().getColor(R.color.hint_foreground_material_light));
+                cButtonDrawable.setColor(ContextCompat.getColor(getContext(), R.color.hint_foreground_material_light));
 
                 break;
             }
@@ -64,10 +64,10 @@ public class AddNewCityDialogFragment extends DialogFragment implements
             {
                 unit = "c";
                 cButtonDrawable = (GradientDrawable) cButton.getBackground();
-                cButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
+                cButtonDrawable.setColor(ContextCompat.getColor(getContext(), R.color.accent_material_dark));
 
                 fButtonDrawable = (GradientDrawable) fButton.getBackground();
-                fButtonDrawable.setColor(getResources().getColor(R.color.hint_foreground_material_light));
+                fButtonDrawable.setColor(ContextCompat.getColor(getContext(), R.color.hint_foreground_material_light));
                 break;
             }
             default:
@@ -100,11 +100,11 @@ public class AddNewCityDialogFragment extends DialogFragment implements
         fButton = (Button)v.findViewById(R.id.f_button_dialog);
         fButton.setOnClickListener(this);
         fButton.setText((char) 0x00b0 + "F");
-        fButton.setTextColor(getResources().getColor(R.color.White));
+        fButton.setTextColor(ContextCompat.getColor(getContext(), R.color.White));
 
         cButton = (Button)v.findViewById(R.id.c_button_dialog);
         cButton.setOnClickListener(this);
-        cButton.setTextColor(getResources().getColor(R.color.White));
+        cButton.setTextColor(ContextCompat.getColor(getContext(), R.color.White));
         cButton.setText((char) 0x00b0 + "C");
         return v;
     }
