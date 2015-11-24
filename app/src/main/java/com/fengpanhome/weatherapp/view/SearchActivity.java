@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -61,8 +62,8 @@ public class SearchActivity extends Activity implements View.OnClickListener, Co
         Switch pilotModeToggle = (Switch)findViewById(R.id.is_pilot_toggle);
         pilotModeToggle.setOnCheckedChangeListener(this);
 
-        fButton.setTextColor(getResources().getColor(R.color.White));
-        cButton.setTextColor(getResources().getColor(R.color.White));
+        fButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.White));
+        cButton.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.White));
 
         fButton.setOnClickListener(this);
         cButton.setOnClickListener(this);
@@ -112,10 +113,10 @@ public class SearchActivity extends Activity implements View.OnClickListener, Co
                 unit = "f";
 
                 fButtonDrawable = (GradientDrawable) fButton.getBackground();
-                fButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
+                fButtonDrawable.setColor(ContextCompat.getColor(v.getContext(), R.color.accent_material_dark));
 
                 cButtonDrawable = (GradientDrawable) cButton.getBackground();
-                cButtonDrawable.setColor(getResources().getColor(R.color.hint_foreground_material_light));
+                cButtonDrawable.setColor(ContextCompat.getColor(v.getContext(), R.color.hint_foreground_material_light));
 
                 break;
             }
@@ -124,10 +125,10 @@ public class SearchActivity extends Activity implements View.OnClickListener, Co
                 unit = "c";
 
                 cButtonDrawable = (GradientDrawable) cButton.getBackground();
-                cButtonDrawable.setColor(getResources().getColor(R.color.accent_material_dark));
+                cButtonDrawable.setColor(ContextCompat.getColor(v.getContext(), R.color.accent_material_dark));
 
                 fButtonDrawable = (GradientDrawable) fButton.getBackground();
-                fButtonDrawable.setColor(getResources().getColor(R.color.hint_foreground_material_light));
+                fButtonDrawable.setColor(ContextCompat.getColor(v.getContext(), R.color.hint_foreground_material_light));
                 break;
             }
             default:
