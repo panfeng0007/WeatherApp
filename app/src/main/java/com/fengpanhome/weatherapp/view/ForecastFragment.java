@@ -5,19 +5,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fengpanhome.weatherapp.R;
 import com.fengpanhome.weatherapp.controller.YahooWeatherInquiry;
-import com.fengpanhome.weatherapp.model.AviationInfo;
 import com.fengpanhome.weatherapp.model.WeatherForecast;
 
 import org.json.JSONException;
@@ -34,7 +31,6 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
     private RecyclerView recyclerView;
     private String location;
     private String unit;
-    private AviationInfo aviationInfo;
 
     public String getLocation()
     {
@@ -82,9 +78,6 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
     public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecastAdapter.WeatherForecastViewHolder>
     {
         private static final int FORECAST_VIEW = 0;
-        private static final int METAR_VIEW = 1;
-        private static final int TAF_VIEW = 2;
-        private static final int AREA_FORECAST_VIEW = 3;
 
         private ArrayList<WeatherForecast> weatherForecastList;
 
@@ -109,16 +102,6 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
                 case FORECAST_VIEW:
                 {
                     v = layoutInflater.inflate(R.layout.forecast_card_layout, viewGroup, false);
-                    return new WeatherForecastViewHolder(v, viewType);
-                }
-                case METAR_VIEW:
-                {
-                    v = layoutInflater.inflate(R.layout.metar_card_layout, viewGroup, false);
-                    return new WeatherForecastViewHolder(v, viewType);
-                }
-                case TAF_VIEW:
-                {
-                    v = layoutInflater.inflate(R.layout.metar_card_layout, viewGroup, false);
                     return new WeatherForecastViewHolder(v, viewType);
                 }
                 default:
@@ -168,25 +151,6 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
                     holder.sunset.setText(weatherForecastList.get(i).getWeatherForecastCurrent().getSunsetTime());
                     break;
                 }
-                case METAR_VIEW:
-                {
-                    holder.metarTitle.setText(R.string.metar_title);
-                    TextView temp = new TextView(getActivity());
-                    temp.setText(R.string.area_forecast_text);
-                    temp.setTextSize(16);
-                    holder.metarLayout.addView(temp);
-                    break;
-                }
-                case TAF_VIEW:
-                {
-                    holder.metarTitle.setText(R.string.taf_title);
-                    holder.metarTafCard.setBackgroundColor(getResources().getColor(R.color.LightGreen));
-                    TextView temp = new TextView(getActivity());
-                    temp.setText(R.string.area_forecast_text);
-                    temp.setTextSize(16);
-                    holder.metarLayout.addView(temp);
-                    break;
-                }
                 default:
                     break;
             }
@@ -228,10 +192,8 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
             public TextView tempMaxDayFive;
             public TextView sunrise;
             public TextView sunset;
+            public TextView c_f;
 
-            public TextView metarTitle;
-            public LinearLayout metarLayout;
-            public CardView metarTafCard;
             public WeatherForecastViewHolder(View itemView, int viewType)
             {
                 super(itemView);
@@ -266,14 +228,7 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
                         tempMaxDayFive = (TextView) itemView.findViewById(R.id.dayfivetempmax);
                         sunrise = (TextView) itemView.findViewById(R.id.sunrise);
                         sunset = (TextView) itemView.findViewById(R.id.sunset);
-                        break;
-                    }
-                    case METAR_VIEW:
-                    case TAF_VIEW:
-                    {
-                        metarTitle = (TextView) itemView.findViewById(R.id.metar_title);
-                        metarLayout = (LinearLayout) itemView.findViewById(R.id.metar_content_layout);
-                        metarTafCard = (CardView) itemView.findViewById(R.id.metar_taf_card);
+                        c_f = (TextView) itemView.findViewById(R.id.c_f);
                         break;
                     }
                 }

@@ -40,18 +40,6 @@ public class ForecastActivity extends FragmentActivity implements
     private ImageButton removeButton;
     private boolean showButtons;
 
-    private boolean pilotMode;
-    private boolean isCheckingMetar;
-    private boolean isCheckingTaf;
-    private boolean isCheckingPirep;
-    private boolean isCheckingAreaForecast;
-
-    private ArrayList<Boolean> pilotModeList;
-    private ArrayList<Boolean> metarFlagList;
-    private ArrayList<Boolean> tafFlagList;
-    private ArrayList<Boolean> pirepFlagList;
-    private ArrayList<Boolean> areaForecastFlagList;
-
     ProgressBar progressBar;
 
 
@@ -157,12 +145,6 @@ public class ForecastActivity extends FragmentActivity implements
             {
                 location = args.getString("LOCATION");
                 unit = args.getString("UNIT");
-                pilotMode = args.getBoolean("PILOT_MODE");
-                isCheckingMetar = args.getBoolean("CHECKING_METAR");
-                isCheckingTaf = args.getBoolean("CHECKING_TAF");
-                isCheckingPirep = args.getBoolean("CHECKING_PIREP");
-                isCheckingAreaForecast = args.getBoolean("CHECKING_AREA_FORECAST");
-
                 locations = null;
                 units = null;
             }
