@@ -192,7 +192,6 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
             public TextView tempMaxDayFive;
             public TextView sunrise;
             public TextView sunset;
-            public TextView c_f;
 
             public WeatherForecastViewHolder(View itemView, int viewType)
             {
@@ -228,7 +227,6 @@ public class ForecastFragment extends Fragment implements SwipeRefreshLayout.OnR
                         tempMaxDayFive = (TextView) itemView.findViewById(R.id.dayfivetempmax);
                         sunrise = (TextView) itemView.findViewById(R.id.sunrise);
                         sunset = (TextView) itemView.findViewById(R.id.sunset);
-                        c_f = (TextView) itemView.findViewById(R.id.c_f);
                         break;
                     }
                 }

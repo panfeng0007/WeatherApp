@@ -99,13 +99,13 @@ public class AddNewCityDialogFragment extends DialogFragment implements
 
         fButton = (Button)v.findViewById(R.id.f_button_dialog);
         fButton.setOnClickListener(this);
-        fButton.setText((char) 0x00b0 + "F");
+        fButton.setText(R.string.fahrenheit);
         fButton.setTextColor(ContextCompat.getColor(getContext(), R.color.White));
 
         cButton = (Button)v.findViewById(R.id.c_button_dialog);
         cButton.setOnClickListener(this);
         cButton.setTextColor(ContextCompat.getColor(getContext(), R.color.White));
-        cButton.setText((char) 0x00b0 + "C");
+        cButton.setText(R.string.celsius);
         return v;
     }
 
